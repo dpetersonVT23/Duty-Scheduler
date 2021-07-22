@@ -1,5 +1,7 @@
-# David Peterson
 # RA Duty Scheduler 2021
+# Copyright (c) 2021, David Peterson
+#
+# All rights reserved.
 
 # import statements
 import calendar
@@ -8,7 +10,7 @@ import sys
 import random
 
 from datetime import datetime
-from RA import ResidentAdvisor
+from RA import ResidentAdviser
 from mplcal import MplCalendar
 
 # constants
@@ -36,16 +38,17 @@ for i in range(NUM_DAYS_MONTH):
     schedule_dict[i + 1] = ['RA1', 'RA2']
 
 # read and create Pandas data frame from Availability XLSX file
+# CHANGE THE NAME OF YOUR AVAILABILITY XLSX FILE HERE
 AVAILABILITY_FILE_PATH = "Availability/test1.xlsx"
 availability_master = pd.DataFrame(pd.read_excel(AVAILABILITY_FILE_PATH))
 
 # list of RA names from Availability XLSX file
 RA_NAMES = availability_master["RA Name"].tolist()
 
-# create RA object from ResidentAdvisor class for each RA in Availability XLSX file
+# create RA object from ResidentAdviser class for each RA in Availability XLSX file
 RA_DETAILS = {}
 for i in range(len(RA_NAMES)):
-    RA_DETAILS[RA_NAMES[i]] = ResidentAdvisor(RA_NAMES[i], availability_master.iloc[i, SCHEDULE_START_DAY:MONTH_END_DAY + 1].tolist())
+    RA_DETAILS[RA_NAMES[i]] = ResidentAdviser(RA_NAMES[i], availability_master.iloc[i, SCHEDULE_START_DAY:MONTH_END_DAY + 1].tolist())
 
 # determine candidates for scheduling on each day of the current month + schedule accordingly based on availability
 for DAY_NUM in range(NUM_DAYS_MONTH):
