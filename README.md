@@ -28,6 +28,17 @@ If you have persistent trouble setting this up, feel free to email me and I am h
 7) Click the "Clone" button and you are done with Step 1
 8) If you do not have a Python Interpreter configured, please reference https://www.jetbrains.com/help/pycharm/quick-start-guide.html#create for set-up instructions
 
+**Installing Packages**
+
+This program needs support from external libraries to function correctly, once your Python Interpreter is set-up, you can install these packages to ensure everything works correctly for you.
+
+Please install the following packages:
+- calendar
+- datetime
+- matplotlib
+- pandas
+- random
+- sys
 
 ## Availability Excel File Set-Up
 Set-up the outline for your excel file in accordance with this example image:
