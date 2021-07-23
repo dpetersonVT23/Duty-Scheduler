@@ -72,7 +72,7 @@ Instructions for RAs to fill out availability correctly:
 - N          = NOT AVAILABLE FOR DUTY
 - B          = AVAILABLE IF NEEDED (BACKUP)
 
-Please see example below for entering "NOT AVAILABLE FOR DUTY" and "BACKUP" entries:
+Please see example below for entering "NOT AVAILABLE FOR DUTY" entries:
 
 ![](images/excel_image_2.png)
 
