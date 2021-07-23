@@ -1,4 +1,4 @@
-# RA Duty Scheduler 2021
+# RA Duty Scheduler
 # Copyright (c) 2021, David Peterson
 #
 # All rights reserved.
@@ -14,7 +14,7 @@ from RA import ResidentAdviser
 from mplcal import MplCalendar
 
 # constants
-YEAR = 2021
+YEAR = datetime.today().year
 MIN_SCHEDULED_RAS = 2
 WEEKDAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday']
 WEEKENDS = ['Friday', 'Saturday']
@@ -39,7 +39,7 @@ for i in range(NUM_DAYS_MONTH):
 
 # read and create Pandas data frame from Availability XLSX file
 # CHANGE THE NAME OF YOUR AVAILABILITY XLSX FILE HERE
-AVAILABILITY_FILE_PATH = "Availability/test1.xlsx"
+AVAILABILITY_FILE_PATH = "Availability/myAvailabilityExcelFile.xlsx"
 availability_master = pd.DataFrame(pd.read_excel(AVAILABILITY_FILE_PATH))
 
 # list of RA names from Availability XLSX file
