@@ -88,7 +88,7 @@ Want to schedule only the first part or second part of the month? You can do tha
 
 Modify Start Date: Open the program in PyCharm and locate LINE 31 in main.py, here you can change the duty scheduling start date. The default value is 1, representing the start of the month, but if you'd like to start scheduling duty on the 14th for example, set this value to 14.
 
-Open the program in PyCharm and locate LINE 32 in main.py, here you can change the duty scheduling end date. The default value is NUM_DAYS_MONTH (representing the number of days in the current month), representing the end of the month, but if you'd like to end scheduling duty on the 28th for example, set this value to 28 (this will include scheduling duty on the 28th).
+Modify End Date: Open the program in PyCharm and locate LINE 32 in main.py, here you can change the duty scheduling end date. The default value is NUM_DAYS_MONTH (representing the number of days in the current month), representing the end of the month, but if you'd like to end scheduling duty on the 28th for example, set this value to 28 (this will include scheduling duty on the 28th).
 
 ## Not Enough Candidates Warning
 If you get a warning that looks like this in the "Run" tab at the bottom of the PyCharm IDE, this means there are not enough RAs available for duty on the specified day. A warning like this may appear as the following:
