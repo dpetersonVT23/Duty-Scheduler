@@ -69,7 +69,7 @@ for DAY_NUM in range(NUM_DAYS_MONTH):
             count_threshold += 1
 
             if count_threshold == NUM_DAYS_YEAR:
-                print("NOT ENOUGH CANDIDATES FOR " + MONTH_STRING + " " + str(DAY_NUM + 1) + " (WEEKDAY)")
+                print("NOT ENOUGH CANDIDATES FOR " + MONTH_STRING + " " + str(DAY_NUM + 1) + " (WEEKDAY) - Currently have " + str(len(candidates)) + " candidate(s)")
                 sys.exit(1)
     elif calendar.day_name[datetime(YEAR, MONTH_NUM, DAY_NUM + 1).weekday()] in WEEKENDS:
         weekday_boolean = False
@@ -110,7 +110,7 @@ for keys, RA in RA_DETAILS.items():
 # create calendar with names of RAs on duty labeled on respective date
 calendar_create = MplCalendar(YEAR, MONTH_NUM)
 for DAY_NUM in range(NUM_DAYS_MONTH):
-    calendar_create.add_event(DAY_NUM+1, schedule_dict[DAY_NUM + 1][0])
+    calendar_create.add_event(DAY_NUM + 1, schedule_dict[DAY_NUM + 1][0])
     calendar_create.add_event(DAY_NUM + 1, schedule_dict[DAY_NUM + 1][1])
 calendar_create.show()
 
