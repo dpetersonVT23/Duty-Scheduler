@@ -82,5 +82,7 @@ Now to run the program! Open the program in PyCharm and locate LINE 42 in main.p
 # Advanced Tips
 
 ## Partial Month Scheduling
+Details coming soon...
 
 ## Not Enough Candidates Warning
+Details coming soon...
