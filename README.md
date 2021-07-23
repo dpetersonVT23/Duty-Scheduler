@@ -79,7 +79,7 @@ Please see example below for entering "NOT AVAILABLE FOR DUTY" and "BACKUP" entr
 
 How to save in the correct location: Locate where in your file explorer you set-up the Python program when you clicked "Get from Version Control" or "Get from VCS". Open the RA_Duty_Scheduler folder, open the Availability folder, and save your Availability Excel file here.
 
-Now to run the program! Open the program in PyCharm and locate LINE 42 in main.py, this contains the path to your Availability Excel file. Modify it so its name reflects the name of your Availability Excel file (currently it is set to the test1.xlsx file). Click the Green Play button and your Calendar will pop-up and automatically be saved to the Schedule folder for you to access and share with your RAs!
+Now to run the program! Open the program in PyCharm and locate LINE 42 in main.py, this contains the path to your Availability Excel file. Modify it so its name reflects the name of your Availability Excel file (currently it is set to the myAvailabilityExcelFile.xlsx file). Click the Green Play button and your Calendar will pop-up and automatically be saved to the Schedule folder for you to access and share with your RAs!
 
 # Advanced Tips
 
