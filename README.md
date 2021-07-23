@@ -83,7 +83,7 @@ How to save in the correct location: Locate where in your file explorer you set-
 
 Now to run the program! Open the program in PyCharm and locate LINE 42 in main.py, this contains the path to your Availability Excel file. Modify it so its name reflects the name of your Availability Excel file (currently it is set to the myAvailabilityExcelFile.xlsx file). Click the Green Play button and your Calendar will pop-up and automatically be saved to the Schedule folder for you to access and share with your RAs!
 
-Run Output: In the "Run" tab, at the bottom of the PyCharm IDE, you will see a series of outputs after you run the program providing you additional information about your newly generated RA Duty Calendar. From top to bottom, you will find a list of the RAs on duty each day, the number of weekdays/weekends each RA is scheduled for the month, and the number of unique RAs each RA is partnered up with on duty along with who specifically these unique RAs are!
+Run Output: In the "Run" tab, at the bottom of the PyCharm IDE, you will see a series of outputs after you run the program providing you additional information about your newly generated RA Duty Calendar. From top to bottom, you will find a list of the RAs on duty each day, the number of weekdays/weekends each RA is scheduled for the month, and the number of unique RAs each RA is partnered up with on duty (along with who specifically these unique RAs are)!
 
 # Advanced Tips
 
