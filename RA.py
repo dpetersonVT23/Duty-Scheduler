@@ -18,6 +18,8 @@ class ResidentAdviser:
         self.scheduled_weekdays = 0             # count for number of weekdays an RA is scheduled in a month
         self.scheduled_weekends = 0             # count for number of weekends an RA is scheduled in a month
 
+        self.partnerships = []                  # list to hold names of RAs an RA has had duty with for the given month
+
     # method to create a list of dates the RA is available for the given month
     def cleanAvailability(self):
         for index, value in enumerate(self.availability_raw):
