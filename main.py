@@ -21,7 +21,7 @@ WEEKENDS = ['Friday', 'Saturday']
 NUM_DAYS_YEAR = 365
 
 # month number and string
-MONTH_NUM = datetime.today().month
+MONTH_NUM = datetime.today().month + 1
 MONTH_STRING = calendar.month_name[MONTH_NUM]
 
 # number of days in current month
