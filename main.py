@@ -15,10 +15,11 @@ from mplcal import MplCalendar
 
 # constants
 YEAR = datetime.today().year
-MIN_SCHEDULED_RAS = 2
 WEEKDAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday']
 WEEKENDS = ['Friday', 'Saturday']
 NUM_DAYS_YEAR = 365
+WEEKDAY_STAFF_NUM = 1
+WEEKEND_STAFF_NUM = 1
 
 # month number and string
 MONTH_NUM = datetime.today().month + 1
@@ -64,10 +65,14 @@ for DAY_NUM in range(NUM_DAYS_MONTH):
         for keys, RA in RA_DETAILS.items():
             if RA.scheduled_weekdays < count_threshold:
                 count_threshold = RA.scheduled_weekdays
-        while len(candidates) < MIN_SCHEDULED_RAS:
+        while len(candidates) < WEEKDAY_STAFF_NUM:
             for keys, RA in RA_DETAILS.items():
                 if RA.scheduled_weekdays <= count_threshold and DAY_NUM + 1 in RA.availability_clean and RA.name not in candidates:
-                    candidates.append(RA.name)
+                    if DAY_NUM:
+                        if RA.name not in schedule_dict[DAY_NUM]:
+                            candidates.append(RA.name)
+                    else:
+                        candidates.append(RA.name)
             if len(candidates) == 1 and not candidate_guaranteed:
                 candidate_guaranteed = candidates[0]
             count_threshold += 1
@@ -75,15 +80,90 @@ for DAY_NUM in range(NUM_DAYS_MONTH):
             if count_threshold == NUM_DAYS_YEAR:
                 print("NOT ENOUGH CANDIDATES FOR " + MONTH_STRING + " " + str(DAY_NUM + 1) + " (WEEKDAY) - Currently have " + str(len(candidates)) + " candidate(s)")
                 sys.exit(1)
+
+        # update partnerships
+        if len(candidates) == WEEKDAY_STAFF_NUM:
+            if WEEKEND_STAFF_NUM > 1:
+                for i in range(len(candidates)):
+                    if not i and candidates[i] not in RA_DETAILS[candidates[0]].partnerships:
+                        RA_DETAILS[candidates[0]].partnerships.append(candidates[i])
+                        RA_DETAILS[candidates[i]].partnerships.append(candidates[0])
+            else:
+                pass  # no partnerships updated if alone
+
+            # update weekday counts
+            for i in range(len(candidates)):
+                RA_DETAILS[candidates[i]].scheduled_weekdays += 1
+
+            # append RA names to the schedule management dictionary
+            candidates_selected = []
+            for i in range(len(candidates)):
+                candidates_selected.append(candidates[i])
+
+            schedule_dict[DAY_NUM + 1] = candidates_selected
+
+        # scheduling process
+        elif len(candidates) > WEEKDAY_STAFF_NUM:
+            candidate_selection = random.sample(range(0, len(candidates)), len(candidates))
+            if not candidate_guaranteed:
+                candidates_selected = [candidates[candidate_selection[0]]]
+                for index in range(1, len(candidate_selection)):
+                    if len(candidates_selected) != WEEKDAY_STAFF_NUM:
+                        if candidates[candidate_selection[index]] not in RA_DETAILS[candidates[candidate_selection[0]]].partnerships:
+                            RA_DETAILS[candidates[candidate_selection[0]]].partnerships.append(candidates[candidate_selection[index]])
+                            RA_DETAILS[candidates[candidate_selection[index]]].partnerships.append(candidates[candidate_selection[0]])
+                            candidates_selected.append(candidates[candidate_selection[index]])
+                            break
+                if len(candidates_selected) != WEEKDAY_STAFF_NUM:
+                    for index in range(1, len(candidate_selection)):
+                        if candidates[candidate_selection[index]] not in candidates_selected and len(candidates_selected) != WEEKDAY_STAFF_NUM:
+                            candidates_selected.append(candidates[candidate_selection[index]])
+                            break
+
+                # update weekday counts
+                for i in range(len(candidates_selected)):
+                    RA_DETAILS[candidates[candidate_selection[i]]].scheduled_weekdays += 1
+
+                # append RA names to the schedule management dictionary
+                schedule_dict[DAY_NUM + 1] = candidates_selected
+            else:
+                candidates_selected = []
+                for index in range(0, len(candidate_selection)):
+                    if len(candidates_selected) != WEEKDAY_STAFF_NUM-1:
+                        if candidates[candidate_selection[index]] not in RA_DETAILS[candidate_guaranteed].partnerships \
+                                and not candidate_guaranteed == candidates[candidate_selection[index]]:
+                            RA_DETAILS[candidate_guaranteed].partnerships.append(candidates[candidate_selection[index]])
+                            RA_DETAILS[candidates[candidate_selection[index]]].partnerships.append(candidate_guaranteed)
+                            candidates_selected.append(candidates[candidate_selection[index]])
+                            break
+                if len(candidates_selected) != WEEKDAY_STAFF_NUM-1:
+                    for index in range(0, len(candidate_selection)):
+                        if candidates[candidate_selection[index]] not in candidates_selected and len(candidates_selected) != WEEKDAY_STAFF_NUM-1 \
+                                and not candidate_guaranteed == candidates[candidate_selection[index]]:
+                            candidates_selected.append(candidates[candidate_selection[index]])
+                            break
+
+                # update weekday counts
+                for i in range(len(candidates_selected)):
+                    RA_DETAILS[candidate_guaranteed].scheduled_weekdays += 1
+                    RA_DETAILS[candidates[candidate_selection[i]]].scheduled_weekdays += 1
+
+                # append RA names to the schedule management dictionary
+                candidates_selected.append(candidate_guaranteed)
+                schedule_dict[DAY_NUM + 1] = candidates_selected
     elif calendar.day_name[datetime(YEAR, MONTH_NUM, DAY_NUM + 1).weekday()] in WEEKENDS:
         weekday_boolean = False
         for keys, RA in RA_DETAILS.items():
             if RA.scheduled_weekends < count_threshold:
                 count_threshold = RA.scheduled_weekends
-        while len(candidates) < MIN_SCHEDULED_RAS:
+        while len(candidates) < WEEKEND_STAFF_NUM:
             for keys, RA in RA_DETAILS.items():
                 if RA.scheduled_weekends <= count_threshold and DAY_NUM + 1 in RA.availability_clean and RA.name not in candidates:
-                    candidates.append(RA.name)
+                    if DAY_NUM:
+                        if RA.name not in schedule_dict[DAY_NUM]:
+                            candidates.append(RA.name)
+                    else:
+                        candidates.append(RA.name)
             if len(candidates) == 1 and not candidate_guaranteed:
                 candidate_guaranteed = candidates[0]
             count_threshold += 1
@@ -92,75 +172,76 @@ for DAY_NUM in range(NUM_DAYS_MONTH):
                 print("NOT ENOUGH CANDIDATES FOR " + MONTH_STRING + " " + str(DAY_NUM + 1) + " (WEEKEND) - Currently have " + str(len(candidates)) + " candidate(s)")
                 sys.exit(1)
 
-    # scheduling process
-    if len(candidates) > 2:
-        candidate_selection = random.sample(range(0, len(candidates)), len(candidates))
-
-    # update partnerships
-    if len(candidates) == 2:
-        if candidates[1] not in RA_DETAILS[candidates[0]].partnerships:
-            RA_DETAILS[candidates[0]].partnerships.append(candidates[1])
-            RA_DETAILS[candidates[1]].partnerships.append(candidates[0])
-        candidate_selected = 1
-
-        # update weekday/weekend counts
-        if weekday_boolean:
-            RA_DETAILS[candidates[0]].scheduled_weekdays += 1
-            RA_DETAILS[candidates[1]].scheduled_weekdays += 1
-        else:
-            RA_DETAILS[candidates[0]].scheduled_weekends += 1
-            RA_DETAILS[candidates[1]].scheduled_weekends += 1
-
-        # append RA names to the schedule management dictionary
-        schedule_dict[DAY_NUM + 1] = candidates[0], candidates[1]
-    elif len(candidates) > 2:
-        if not candidate_guaranteed:
-            for index in range(1, len(candidate_selection)):
-                if candidates[candidate_selection[index]] not in RA_DETAILS[candidates[candidate_selection[0]]].partnerships:
-                    RA_DETAILS[candidates[candidate_selection[0]]].partnerships.append(candidates[candidate_selection[index]])
-                    RA_DETAILS[candidates[candidate_selection[index]]].partnerships.append(candidates[candidate_selection[0]])
-                    candidate_selected = index
-                    break
-            if index == len(candidate_selection) - 1:
-                if candidates[candidate_selection[1]] not in RA_DETAILS[candidates[candidate_selection[0]]].partnerships:
-                    RA_DETAILS[candidates[candidate_selection[0]]].partnerships.append(candidates[candidate_selection[1]])
-                    RA_DETAILS[candidates[candidate_selection[1]]].partnerships.append(candidates[candidate_selection[0]])
-                candidate_selected = 1
-
-            # update weekday/weekend counts
-            if weekday_boolean:
-                RA_DETAILS[candidates[candidate_selection[0]]].scheduled_weekdays += 1
-                RA_DETAILS[candidates[candidate_selection[candidate_selected]]].scheduled_weekdays += 1
+        # update partnerships
+        if len(candidates) == WEEKEND_STAFF_NUM:
+            if WEEKEND_STAFF_NUM > 1:
+                for i in range(len(candidates)):
+                    if not i and candidates[i] not in RA_DETAILS[candidates[0]].partnerships:
+                        RA_DETAILS[candidates[0]].partnerships.append(candidates[i])
+                        RA_DETAILS[candidates[i]].partnerships.append(candidates[0])
             else:
-                RA_DETAILS[candidates[candidate_selection[0]]].scheduled_weekends += 1
-                RA_DETAILS[candidates[candidate_selection[candidate_selected]]].scheduled_weekends += 1
+                pass  # no partnerships updated if alone
+
+            # update weekend counts
+            for i in range(len(candidates)):
+                RA_DETAILS[candidates[i]].scheduled_weekends += 1
 
             # append RA names to the schedule management dictionary
-            schedule_dict[DAY_NUM + 1] = candidates[candidate_selection[0]], candidates[candidate_selection[candidate_selected]]
-        else:
-            for index in range(0, len(candidate_selection)):
-                if candidates[candidate_selection[index]] not in RA_DETAILS[candidate_guaranteed].partnerships\
-                        and not candidate_guaranteed == candidates[candidate_selection[index]]:
-                    RA_DETAILS[candidate_guaranteed].partnerships.append(candidates[candidate_selection[index]])
-                    RA_DETAILS[candidates[candidate_selection[index]]].partnerships.append(candidate_guaranteed)
-                    candidate_selected = index
-                    break
-            if index == len(candidate_selection) - 1:
-                if candidates[candidate_selection[1]] not in RA_DETAILS[candidate_guaranteed].partnerships:
-                    RA_DETAILS[candidate_guaranteed].partnerships.append(candidates[candidate_selection[1]])
-                    RA_DETAILS[candidates[candidate_selection[1]]].partnerships.append(candidate_guaranteed)
-                candidate_selected = 1
+            candidates_selected = []
+            for i in range(len(candidates)):
+                candidates_selected.append(candidates[i])
 
-            # update weekday/weekend counts
-            if weekday_boolean:
-                RA_DETAILS[candidate_guaranteed].scheduled_weekdays += 1
-                RA_DETAILS[candidates[candidate_selection[candidate_selected]]].scheduled_weekdays += 1
+            schedule_dict[DAY_NUM + 1] = candidates_selected
+
+        # scheduling process
+        elif len(candidates) > WEEKEND_STAFF_NUM:
+            candidate_selection = random.sample(range(0, len(candidates)), len(candidates))
+            if not candidate_guaranteed:
+                candidates_selected = [candidates[candidate_selection[0]]]
+                for index in range(1, len(candidate_selection)):
+                    if len(candidates_selected) != WEEKEND_STAFF_NUM:
+                        if candidates[candidate_selection[index]] not in RA_DETAILS[candidates[candidate_selection[0]]].partnerships:
+                            RA_DETAILS[candidates[candidate_selection[0]]].partnerships.append(candidates[candidate_selection[index]])
+                            RA_DETAILS[candidates[candidate_selection[index]]].partnerships.append(candidates[candidate_selection[0]])
+                            candidates_selected.append(candidates[candidate_selection[index]])
+                            break
+                if len(candidates_selected) != WEEKEND_STAFF_NUM:
+                    for index in range(1, len(candidate_selection)):
+                        if candidates[candidate_selection[index]] not in candidates_selected and len(candidates_selected) != WEEKEND_STAFF_NUM:
+                            candidates_selected.append(candidates[candidate_selection[index]])
+                            break
+
+                # update weekend counts
+                for i in range(len(candidates_selected)):
+                    RA_DETAILS[candidates[candidate_selection[i]]].scheduled_weekends += 1
+
+                # append RA names to the schedule management dictionary
+                schedule_dict[DAY_NUM + 1] = candidates_selected
             else:
-                RA_DETAILS[candidate_guaranteed].scheduled_weekends += 1
-                RA_DETAILS[candidates[candidate_selection[candidate_selected]]].scheduled_weekends += 1
+                candidates_selected = []
+                for index in range(0, len(candidate_selection)):
+                    if len(candidates_selected) != WEEKEND_STAFF_NUM - 1:
+                        if candidates[candidate_selection[index]] not in RA_DETAILS[candidate_guaranteed].partnerships \
+                                and not candidate_guaranteed == candidates[candidate_selection[index]]:
+                            RA_DETAILS[candidate_guaranteed].partnerships.append(candidates[candidate_selection[index]])
+                            RA_DETAILS[candidates[candidate_selection[index]]].partnerships.append(candidate_guaranteed)
+                            candidates_selected.append(candidates[candidate_selection[index]])
+                            break
+                if len(candidates_selected) != WEEKEND_STAFF_NUM - 1:
+                    for index in range(0, len(candidate_selection)):
+                        if candidates[candidate_selection[index]] not in candidates_selected and len(candidates_selected) != WEEKEND_STAFF_NUM - 1 \
+                                and not candidate_guaranteed == candidates[candidate_selection[index]]:
+                            candidates_selected.append(candidates[candidate_selection[index]])
+                            break
 
-            # append RA names to the schedule management dictionary
-            schedule_dict[DAY_NUM + 1] = candidate_guaranteed, candidates[candidate_selection[candidate_selected]]
+                # update weekend counts
+                for i in range(len(candidates_selected)):
+                    RA_DETAILS[candidate_guaranteed].scheduled_weekends += 1
+                    RA_DETAILS[candidates[candidate_selection[i]]].scheduled_weekends += 1
+
+                # append RA names to the schedule management dictionary
+                candidates_selected.append(candidate_guaranteed)
+                schedule_dict[DAY_NUM + 1] = candidates_selected
 
 # confirm correct names scheduled for correct dates
 print("RAs Scheduled Dates")
@@ -183,8 +264,12 @@ print("-------------------------------------------")
 # create calendar with names of RAs on duty labeled on respective date
 calendar_create = MplCalendar(YEAR, MONTH_NUM)
 for DAY_NUM in range(NUM_DAYS_MONTH):
-    calendar_create.add_event(DAY_NUM + 1, schedule_dict[DAY_NUM + 1][0])
-    calendar_create.add_event(DAY_NUM + 1, schedule_dict[DAY_NUM + 1][1])
+    if calendar.day_name[datetime(YEAR, MONTH_NUM, DAY_NUM + 1).weekday()] in WEEKDAYS:
+        for i in range(WEEKDAY_STAFF_NUM):
+            calendar_create.add_event(DAY_NUM + 1, schedule_dict[DAY_NUM + 1][i])
+    elif calendar.day_name[datetime(YEAR, MONTH_NUM, DAY_NUM + 1).weekday()] in WEEKENDS:
+        for i in range(WEEKEND_STAFF_NUM):
+            calendar_create.add_event(DAY_NUM + 1, schedule_dict[DAY_NUM + 1][i])
 calendar_create.show()
 
 calendar_save_path = MONTH_STRING + "_" + str(YEAR) + "_duty_schedule"
