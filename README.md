@@ -9,6 +9,8 @@ V1.1 - Partnerships Added
 
 If you experience any bugs/errors or would like to suggest an improvement, please contact me by emailing dpeterson23@vt.edu
 
+_Currently set up for 2 staff each night, contact me for specialized changes._
+
 # How to Use
 1) Download and Set-Up PyCharm (Free)
 2) Create your Availability Excel file in the correct format
