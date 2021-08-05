@@ -6,6 +6,7 @@ Create an RA Duty Schedule in seconds!
 **Version:** V1.1 07-23-2021
 
 V1.1 - Partnerships Added
+
 V1.2 - Custom number of staff for weekdays/weekends
 
 If you experience any bugs/errors or would like to suggest an improvement, please contact me by emailing dpeterson23@vt.edu
