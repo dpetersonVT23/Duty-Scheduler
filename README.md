@@ -6,10 +6,9 @@ Create an RA Duty Schedule in seconds!
 **Version:** V1.1 07-23-2021
 
 V1.1 - Partnerships Added
+V1.2 - Custom number of staff for weekdays/weekends
 
 If you experience any bugs/errors or would like to suggest an improvement, please contact me by emailing dpeterson23@vt.edu
-
-_Currently set up for 2 staff each night, work on update for specific number of staff on weekdays/weekends._
 
 # How to Use
 1) Download and Set-Up PyCharm (Free)
@@ -83,18 +82,23 @@ Please see example below for entering "NOT AVAILABLE FOR DUTY" entries:
 
 How to save in the correct location: Locate where in your file explorer you set-up the Python program when you clicked "Get from Version Control" or "Get from VCS". Open the RA_Duty_Scheduler folder, open the Availability folder, and save your Availability Excel file here.
 
-Now to run the program! Open the program in PyCharm and locate LINE 42 in main.py, this contains the path to your Availability Excel file. Modify it so its name reflects the name of your Availability Excel file (currently it is set to the myAvailabilityExcelFile.xlsx file). Click the Green Play button and your Calendar will pop-up and automatically be saved to the Schedule folder for you to access and share with your RAs!
+Now to run the program! Open the program in PyCharm and locate LINE 45 in main.py, this contains the path to your Availability Excel file. Modify it so its name reflects the name of your Availability Excel file (currently it is set to the myAvailabilityExcelFile.xlsx file). Click the Green Play button and your Calendar will pop-up and automatically be saved to the Schedule folder for you to access and share with your RAs!
 
 Run Output: In the "Run" tab, at the bottom of the PyCharm IDE, you will see a series of outputs after you run the program providing you additional information about your newly generated RA Duty Calendar. From top to bottom, you will find a list of the RAs on duty each day (RAs Scheduled Dates), the number of weekdays/weekends each RA is scheduled for the month (RA Weekday/Weekend Counts), and the number of unique RAs each RA is partnered up with on duty (along with who specifically these unique RAs are) (RA Partnerships)!
 
 # Advanced Tips
 
+## Custom Staff per Weekday/Weekend
+If you only need 1 RA during the weekdays and 2 RAs during the weekend this program can support that option! In fact, this program can schedule up to 3 RAs on weekdays and weekends successfully!
+
+To change how many RAs will be scheduled for a weekday, open the program in PyCharm and locate LINE 23 in main.py, here you can change the number of staff scheduled for the weekdays (Sun-Thurs). To change how many RAs will be scheduled for a weekend, open the program in PyCharm and locate LINE 24 in main.py, here you can change the number of staff scheduled for the weekends (Fri-Sat). 
+
 ## Partial Month Scheduling
 Want to schedule only the first part or second part of the month? You can do that!
 
-Modify Start Date: Open the program in PyCharm and locate LINE 31 in main.py, here you can change the duty scheduling start date. The default value is 1, representing the start of the month, but if you'd like to start scheduling duty on the 14th for example, set this value to 14.
+Modify Start Date: Open the program in PyCharm and locate LINE 34 in main.py, here you can change the duty scheduling start date. The default value is 1, representing the start of the month, but if you'd like to start scheduling duty on the 14th for example, set this value to 14.
 
-Modify End Date: Open the program in PyCharm and locate LINE 32 in main.py, here you can change the duty scheduling end date. The default value is NUM_DAYS_MONTH (representing the number of days in the current month), representing the end of the month, but if you'd like to end scheduling duty on the 28th for example, set this value to 28 (this will include scheduling duty on the 28th).
+Modify End Date: Open the program in PyCharm and locate LINE 35 in main.py, here you can change the duty scheduling end date. The default value is NUM_DAYS_MONTH (representing the number of days in the current month), representing the end of the month, but if you'd like to end scheduling duty on the 28th for example, set this value to 28 (this will include scheduling duty on the 28th).
 
 ## Not Enough Candidates Warning
 If you get a warning that looks like this in the "Run" tab at the bottom of the PyCharm IDE, this means there are not enough RAs available for duty on the specified day. A warning like this may appear as the following:
