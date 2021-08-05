@@ -19,7 +19,7 @@ WEEKDAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday']
 WEEKENDS = ['Friday', 'Saturday']
 NUM_DAYS_YEAR = 365
 WEEKDAY_STAFF_NUM = 1
-WEEKEND_STAFF_NUM = 1
+WEEKEND_STAFF_NUM = 2
 
 # month number and string
 MONTH_NUM = datetime.today().month + 1
