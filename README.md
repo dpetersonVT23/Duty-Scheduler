@@ -5,7 +5,7 @@ Create an RA Duty Schedule in seconds!
 
 **Version:** V1.1 07-23-2021
 
-V1.1 - Partnerships Added
+V1.1 - Partnerships Added - program prioritizes matching you with new RAs
 
 V1.2 - Custom number of staff for weekdays/weekends
 
