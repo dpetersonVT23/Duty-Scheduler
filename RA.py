@@ -1,6 +1,6 @@
 # RA Duty Scheduler
 # Copyright (c) 2021, David Peterson
-# update
+#
 # All rights reserved.
 
 

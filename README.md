@@ -17,7 +17,7 @@ _Currently set up for 2 staff each night, work on update for specific number of 
 3) Save the Availability Excel file in the correct location and run the program
 4) View your automatically created duty schedule in a calendar like this!
 
-![](images/calendar_image.png)
+![](images/calendar.png)
 
 
 ## PyCharm Set-Up
@@ -64,7 +64,7 @@ This is the last step, you are almost done with this one-time set-up!
 ## Availability Excel File Set-Up
 Set-up the outline for your excel file in accordance with this example image:
 
-![](images/excel_image_1.png)
+![](images/excel_1.png)
 
 1) Ensure the top-left cell contains "RA Name"
 2) Enter the days of the month into the following columns
@@ -77,7 +77,7 @@ Instructions for RAs to fill out availability correctly:
 
 Please see example below for entering "NOT AVAILABLE FOR DUTY" entries:
 
-![](images/excel_image_2.png)
+![](images/excel_2.png)
 
 **Tip:** Create a shareable Excel file to give to all your RAs and allow them to input availability by a certain date. Once that date is reached, save the Excel file in the correct location for the program to access it.
 
