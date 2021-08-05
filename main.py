@@ -25,7 +25,7 @@ MONTH_NUM = datetime.today().month + 1
 MONTH_STRING = calendar.month_name[MONTH_NUM]
 
 # number of days in current month
-NUM_DAYS_MONTH = calendar.monthrange(datetime.today().year, datetime.today().month)[1]
+NUM_DAYS_MONTH = calendar.monthrange(datetime.today().year, datetime.today().month + 1)[1]
 
 # schedule bounds - useful for partial months of duty scheduling
 SCHEDULE_START_DAY = 1
