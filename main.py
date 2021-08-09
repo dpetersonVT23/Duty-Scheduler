@@ -38,7 +38,7 @@ MONTH_END_DAY = NUM_DAYS_MONTH
 schedule_dict = {}
 
 for i in range(NUM_DAYS_MONTH):
-    schedule_dict[i + 1] = ['RA1', 'RA2']
+    schedule_dict[i + 1] = ['RA']
 
 # read and create Pandas data frame from Availability XLSX file
 # CHANGE THE NAME OF YOUR AVAILABILITY XLSX FILE HERE
@@ -261,6 +261,12 @@ print("-------------------------------------------")
 print("RA Partnerships")
 for keys, RA in RA_DETAILS.items():
     print(RA.name + " | Partnerships: " + str(RA.partnerships) + " | " + str(len(RA.partnerships)) + "/" + str(len(RA_NAMES) - 1) + " RAs")
+print("-------------------------------------------")
+
+# view RA availability count for each RA for the given month
+print("RA Availability")
+for keys, RA in RA_DETAILS.items():
+    print(RA.name + " | Availability: " + str(len(RA.availability_clean)) + "/" + str(NUM_DAYS_MONTH) + " days")
 print("-------------------------------------------")
 
 # create calendar with names of RAs on duty labeled on respective date
