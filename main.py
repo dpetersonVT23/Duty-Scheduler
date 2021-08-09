@@ -19,16 +19,16 @@ WEEKDAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday']
 WEEKENDS = ['Friday', 'Saturday']
 NUM_DAYS_YEAR = 365
 
-# custom RAs per weekday/weekend
+# setting number of RAs on duty weekday/weekend
 WEEKDAY_STAFF_NUM = 2
 WEEKEND_STAFF_NUM = 2
 
 # month number and string
-MONTH_NUM = datetime.today().month + 1
+MONTH_NUM = datetime.today().month + 1 % 12
 MONTH_STRING = calendar.month_name[MONTH_NUM]
 
 # number of days in current month
-NUM_DAYS_MONTH = calendar.monthrange(datetime.today().year, datetime.today().month + 1)[1]
+NUM_DAYS_MONTH = calendar.monthrange(datetime.today().year, datetime.today().month + 1 % 12)[1]
 
 # schedule bounds - useful for partial months of duty scheduling
 SCHEDULE_START_DAY = 1
@@ -80,7 +80,7 @@ for DAY_NUM in range(NUM_DAYS_MONTH):
             count_threshold += 1
 
             if count_threshold == NUM_DAYS_YEAR:
-                print("NOT ENOUGH CANDIDATES FOR " + MONTH_STRING + " " + str(DAY_NUM + 1) + " (WEEKDAY) - Currently have " + str(len(candidates)) + " candidate(s)")
+                print("NOT ENOUGH CANDIDATES FOR " + MONTH_STRING + " " + str(DAY_NUM + 1) + " (WEEKDAY) - Currently have " + str(len(candidates)) + " candidate(s) | Candidate(s): " + str(candidates))
                 sys.exit(1)
 
         # update partnerships
@@ -171,7 +171,7 @@ for DAY_NUM in range(NUM_DAYS_MONTH):
             count_threshold += 1
 
             if count_threshold == NUM_DAYS_YEAR:
-                print("NOT ENOUGH CANDIDATES FOR " + MONTH_STRING + " " + str(DAY_NUM + 1) + " (WEEKEND) - Currently have " + str(len(candidates)) + " candidate(s)")
+                print("NOT ENOUGH CANDIDATES FOR " + MONTH_STRING + " " + str(DAY_NUM + 1) + " (WEEKEND) - Currently have " + str(len(candidates)) + " candidate(s) | Candidate(s): " + str(candidates))
                 sys.exit(1)
 
         # update partnerships
