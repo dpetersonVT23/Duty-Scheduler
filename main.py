@@ -42,17 +42,10 @@ for i in range(NUM_DAYS_MONTH):
 
 # read and create Pandas data frame from Availability XLSX file
 # CHANGE THE NAME OF YOUR AVAILABILITY XLSX FILE HERE
-AVAILABILITY_FILE_PATH = "Availability/myAvailabilityExcelFile.xlsx"
+AVAILABILITY_FILE_PATH = "Availability/test1.xlsx"
 availability_master = pd.DataFrame(pd.read_excel(AVAILABILITY_FILE_PATH))
 
 #################
-import pandas as pd
-import calendar
-from datetime import datetime
-
-AVAILABILITY_FILE_PATH_OLD = "Availability/test1.xlsx"
-availability_master = pd.DataFrame(pd.read_excel(AVAILABILITY_FILE_PATH_OLD))
-
 # list of RA names from Availability XLSX file
 RA_NAMES = availability_master["First Name"].tolist()
 
@@ -62,43 +55,28 @@ RA_BUSY_DAYS = availability_master["Days"].tolist()
 # number of days in current month
 NUM_DAYS_MONTH = calendar.monthrange(datetime.today().year, datetime.today().month + 1 % 12)[1]
 
-columns = ["RA Name"]
-for m in range(1, NUM_DAYS_MONTH+1):
-    columns.append(str(m))
-
-busy_dict = {}
-availability_dict = {}
-
+# create RA object from ResidentAdviser class for each RA in Availability XLSX file
+RA_DETAILS = {}
 for i in range(len(RA_NAMES)):
     days_ints = []
     days_ints_strings = []
-    default = []
+    availability_excel = []
     days_strings = RA_BUSY_DAYS[i]
     days_strings_split = days_strings.split("/")
 
     for j in range(len(days_strings_split)):
         if j % 2:
             days_ints_strings.append(days_strings_split[j])
-    busy_dict[RA_NAMES[i]] = days_ints_strings
 
     for k in range(len(days_ints_strings)):
         days_ints.append(int(days_ints_strings[k]))
 
-    for l in range(1, NUM_DAYS_MONTH+1):
-        if l not in days_ints:
-            default.append(l)
+    for day in range(1, NUM_DAYS_MONTH + 1):
+        if day not in days_ints:
+            availability_excel.append(day)
 
-############
-
-
-
-# list of RA names from Availability XLSX file
-RA_NAMES = availability_master["RA Name"].tolist()
-
-# create RA object from ResidentAdviser class for each RA in Availability XLSX file
-RA_DETAILS = {}
-for i in range(len(RA_NAMES)):
-    RA_DETAILS[RA_NAMES[i]] = ResidentAdviser(RA_NAMES[i], availability_master.iloc[i, SCHEDULE_START_DAY:MONTH_END_DAY + 1].tolist())
+    print(availability_excel)
+    RA_DETAILS[RA_NAMES[i]] = ResidentAdviser(RA_NAMES[i], availability_excel)
 
 # determine candidates for scheduling on each day of the current month + schedule accordingly based on availability
 for DAY_NUM in range(NUM_DAYS_MONTH):
@@ -178,16 +156,16 @@ for DAY_NUM in range(NUM_DAYS_MONTH):
             else:
                 candidates_selected = []
                 for index in range(0, len(candidate_selection)):
-                    if len(candidates_selected) != WEEKDAY_STAFF_NUM-1:
+                    if len(candidates_selected) != WEEKDAY_STAFF_NUM - 1:
                         if candidates[candidate_selection[index]] not in RA_DETAILS[candidate_guaranteed].partnerships \
                                 and not candidate_guaranteed == candidates[candidate_selection[index]]:
                             RA_DETAILS[candidate_guaranteed].partnerships.append(candidates[candidate_selection[index]])
                             RA_DETAILS[candidates[candidate_selection[index]]].partnerships.append(candidate_guaranteed)
                             candidates_selected.append(candidates[candidate_selection[index]])
                             break
-                if len(candidates_selected) != WEEKDAY_STAFF_NUM-1:
+                if len(candidates_selected) != WEEKDAY_STAFF_NUM - 1:
                     for index in range(0, len(candidate_selection)):
-                        if candidates[candidate_selection[index]] not in candidates_selected and len(candidates_selected) != WEEKDAY_STAFF_NUM-1 \
+                        if candidates[candidate_selection[index]] not in candidates_selected and len(candidates_selected) != WEEKDAY_STAFF_NUM - 1 \
                                 and not candidate_guaranteed == candidates[candidate_selection[index]]:
                             candidates_selected.append(candidates[candidate_selection[index]])
                             break
