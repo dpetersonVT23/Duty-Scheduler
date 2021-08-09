@@ -45,6 +45,53 @@ for i in range(NUM_DAYS_MONTH):
 AVAILABILITY_FILE_PATH = "Availability/myAvailabilityExcelFile.xlsx"
 availability_master = pd.DataFrame(pd.read_excel(AVAILABILITY_FILE_PATH))
 
+#################
+import pandas as pd
+import calendar
+from datetime import datetime
+
+AVAILABILITY_FILE_PATH_OLD = "Availability/test1.xlsx"
+availability_master = pd.DataFrame(pd.read_excel(AVAILABILITY_FILE_PATH_OLD))
+
+# list of RA names from Availability XLSX file
+RA_NAMES = availability_master["First Name"].tolist()
+
+# list of days the RA's are busy
+RA_BUSY_DAYS = availability_master["Days"].tolist()
+
+# number of days in current month
+NUM_DAYS_MONTH = calendar.monthrange(datetime.today().year, datetime.today().month + 1 % 12)[1]
+
+columns = ["RA Name"]
+for m in range(1, NUM_DAYS_MONTH+1):
+    columns.append(str(m))
+
+busy_dict = {}
+availability_dict = {}
+
+for i in range(len(RA_NAMES)):
+    days_ints = []
+    days_ints_strings = []
+    default = []
+    days_strings = RA_BUSY_DAYS[i]
+    days_strings_split = days_strings.split("/")
+
+    for j in range(len(days_strings_split)):
+        if j % 2:
+            days_ints_strings.append(days_strings_split[j])
+    busy_dict[RA_NAMES[i]] = days_ints_strings
+
+    for k in range(len(days_ints_strings)):
+        days_ints.append(int(days_ints_strings[k]))
+
+    for l in range(1, NUM_DAYS_MONTH+1):
+        if l not in days_ints:
+            default.append(l)
+
+############
+
+
+
 # list of RA names from Availability XLSX file
 RA_NAMES = availability_master["RA Name"].tolist()
 
