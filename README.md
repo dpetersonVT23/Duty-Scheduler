@@ -100,4 +100,4 @@ If you get a warning that looks like this in the "Run" tab at the bottom of the 
 
 NOT ENOUGH CANDIDATES FOR JULY 22 (WEEKDAY) - Currently have 1 candidate(s)
 
-This means that on July 22nd, only 1 of your RAs has noted that they are available for duty but you need atleast 2 to be available. Check if any RA's have applied to be backups for this day in the Availability Excel file (if so, change B to N so program accepts their name, don't forget to save the Excel file), if not, reach out and find someone else who is willing to fill in and be the second RA on duty for that day!
+This means that on July 22nd, only 1 of your RAs has noted that they are available for duty but you need atleast 2 to be available. Reach out and find someone else who is willing to fill in and be the second RA on duty for that day!
