@@ -24,14 +24,14 @@ WEEKDAY_STAFF_NUM = 1
 WEEKEND_STAFF_NUM = 2
 
 # month number and string
-MONTH_NUM = datetime.today().month % 12
+MONTH_NUM = datetime.today().month + 1 % 12
 MONTH_STRING = calendar.month_name[MONTH_NUM]
 
 # number of days in current month
-NUM_DAYS_MONTH = calendar.monthrange(datetime.today().year, datetime.today().month % 12)[1]
+NUM_DAYS_MONTH = calendar.monthrange(datetime.today().year, datetime.today().month + 1 % 12)[1]
 
 # schedule bounds - useful for partial months of duty scheduling
-SCHEDULE_START_DAY = 14
+SCHEDULE_START_DAY = 1
 MONTH_END_DAY = NUM_DAYS_MONTH
 
 # dictionary to hold names of RA scheduled for each date
@@ -53,7 +53,7 @@ RA_NAMES = availability_master["First Name"].tolist()
 RA_BUSY_DAYS = availability_master["Days"].tolist()
 
 # number of days in current month
-NUM_DAYS_MONTH = calendar.monthrange(datetime.today().year, datetime.today().month % 12)[1]
+NUM_DAYS_MONTH = calendar.monthrange(datetime.today().year, datetime.today().month + 1 % 12)[1]
 
 # create RA object from ResidentAdviser class for each RA in Availability XLSX file
 RA_DETAILS = {}
