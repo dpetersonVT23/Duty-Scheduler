@@ -45,13 +45,21 @@ for i in range(NUM_DAYS_MONTH):
 AVAILABILITY_FILE_PATH = "Availability/myAvailabilityExcelFile.xlsx"
 availability_master = pd.DataFrame(pd.read_excel(AVAILABILITY_FILE_PATH))
 
-# list of RA names from Availability XLSX file
+# read and create Pandas data frame from History XLSX file
+# CHANGE THE NAME OF YOUR HISTORY XLSX FILE HERE
+HISTORY_FILE_PATH = "History/CHRNE_NHW_HARP_hist.xlsx"
+history_master = pd.DataFrame(pd.read_excel(HISTORY_FILE_PATH))
+
+# list of RA names from Availability XLSX file, cumulative weekdays, cumulative weekends, cumulative partnerships
 RA_NAMES = availability_master["RA Name"].tolist()
+RA_CUM_WEEKDAYS = history_master["Weekdays Total"].tolist()
+RA_CUM_WEEKENDS = history_master["Weekends Total"].tolist()
 
 # create RA object from ResidentAdviser class for each RA in Availability XLSX file
 RA_DETAILS = {}
 for i in range(len(RA_NAMES)):
-    RA_DETAILS[RA_NAMES[i]] = ResidentAdviser(RA_NAMES[i], availability_master.iloc[i, SCHEDULE_START_DAY:MONTH_END_DAY + 1].tolist())
+    RA_DETAILS[RA_NAMES[i]] = ResidentAdviser(RA_NAMES[i], availability_master.iloc[i, SCHEDULE_START_DAY:MONTH_END_DAY + 1].tolist(), RA_CUM_WEEKDAYS[i], RA_CUM_WEEKENDS[i])
+
 
 # determine candidates for scheduling on each day of the current month + schedule accordingly based on availability
 for DAY_NUM in range(NUM_DAYS_MONTH):
