@@ -44,14 +44,24 @@ for i in range(NUM_DAYS_MONTH):
 
 # read and create Pandas data frame from Availability XLSX file
 # CHANGE THE NAME OF YOUR AVAILABILITY XLSX FILE HERE
-BUILDING = "CHRNE_HARP"  # NHW or CHRNE_HARP
-MONTH = "august"
+BUILDING = input("Please input the building community (NHW, CHRNE_HARP): ").upper()
+# BUILDING = "CHRNE_HARP"  # NHW or CHRNE_HARP
+MONTH = input("Please input the current month: ").lower()
+# MONTH = "august"
 AVAILABILITY_FILE_PATH = "Availability/" + MONTH + "_" + BUILDING + ".xlsx"
+if not os.path.isfile(AVAILABILITY_FILE_PATH):
+    print("Incorrect availability file path. Check that the input file path exists and contains the correct month/building format.")
+    print("Format example: monthName_buildingCode.xlsx")
+    sys.exit(1)
 availability_master = pd.DataFrame(pd.read_excel(AVAILABILITY_FILE_PATH))
 
 # read and create Pandas data frame from History XLSX file
 # CHANGE THE NAME OF YOUR HISTORY XLSX FILE HERE
 HISTORY_FILE_PATH = "History/" + BUILDING + "_hist.xlsx"
+if not os.path.isfile(HISTORY_FILE_PATH):
+    print("Incorrect file path. Check that the input file path exists and contains the correct month/building format.")
+    print("Format example: buildingCode_hist.xlsx")
+    sys.exit(1)
 history_master = pd.DataFrame(pd.read_excel(HISTORY_FILE_PATH))
 
 # list of RA names from Availability XLSX file, cumulative weekdays, cumulative weekends, cumulative partnerships
@@ -324,8 +334,10 @@ for index, RA in enumerate(RA_DETAILS.values()):
     history_master.loc[index, "Weekends Total"] = RA.scheduled_weekends
 
     # reset cumulative weekdays/weekends
-    # history_master.loc[index, "Weekdays Total"] = 0
-    # history_master.loc[index, "Weekends Total"] = 0
+    reset = input("Would you like to reset cumulative worked weekdays/weekends? [y/n]: ")
+    if reset == 'y':
+        history_master.loc[index, "Weekdays Total"] = 0
+        history_master.loc[index, "Weekends Total"] = 0
 
 # remove old history file and save new history file for future additions
 os.remove(HISTORY_FILE_PATH)
