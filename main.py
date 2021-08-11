@@ -20,18 +20,18 @@ WEEKENDS = ['Friday', 'Saturday']
 NUM_DAYS_YEAR = 365
 
 # setting number of RAs on duty weekday/weekend
-WEEKDAY_STAFF_NUM = 2
+WEEKDAY_STAFF_NUM = 1
 WEEKEND_STAFF_NUM = 2
 
 # month number and string
-MONTH_NUM = datetime.today().month + 1 % 12
+MONTH_NUM = datetime.today().month % 12
 MONTH_STRING = calendar.month_name[MONTH_NUM]
 
 # number of days in current month
-NUM_DAYS_MONTH = calendar.monthrange(datetime.today().year, datetime.today().month + 1 % 12)[1]
+NUM_DAYS_MONTH = calendar.monthrange(datetime.today().year, datetime.today().month % 12)[1]
 
 # schedule bounds - useful for partial months of duty scheduling
-SCHEDULE_START_DAY = 1
+SCHEDULE_START_DAY = 14
 MONTH_END_DAY = NUM_DAYS_MONTH
 
 # dictionary to hold names of RA scheduled for each date
@@ -42,7 +42,7 @@ for i in range(NUM_DAYS_MONTH):
 
 # read and create Pandas data frame from Availability XLSX file
 # CHANGE THE NAME OF YOUR AVAILABILITY XLSX FILE HERE
-AVAILABILITY_FILE_PATH = "Availability/test1.xlsx"
+AVAILABILITY_FILE_PATH = "Availability/august.xlsx"
 availability_master = pd.DataFrame(pd.read_excel(AVAILABILITY_FILE_PATH))
 
 #################
@@ -53,7 +53,7 @@ RA_NAMES = availability_master["First Name"].tolist()
 RA_BUSY_DAYS = availability_master["Days"].tolist()
 
 # number of days in current month
-NUM_DAYS_MONTH = calendar.monthrange(datetime.today().year, datetime.today().month + 1 % 12)[1]
+NUM_DAYS_MONTH = calendar.monthrange(datetime.today().year, datetime.today().month % 12)[1]
 
 # create RA object from ResidentAdviser class for each RA in Availability XLSX file
 RA_DETAILS = {}
@@ -62,7 +62,8 @@ for i in range(len(RA_NAMES)):
     days_ints_strings = []
     availability_excel = []
     days_strings = RA_BUSY_DAYS[i]
-    days_strings_split = days_strings.split("/")
+    if isinstance(days_strings, str):
+        days_strings_split = days_strings.split("/")
 
     for j in range(len(days_strings_split)):
         if j % 2:
@@ -75,11 +76,10 @@ for i in range(len(RA_NAMES)):
         if day not in days_ints:
             availability_excel.append(day)
 
-    print(availability_excel)
     RA_DETAILS[RA_NAMES[i]] = ResidentAdviser(RA_NAMES[i], availability_excel)
 
 # determine candidates for scheduling on each day of the current month + schedule accordingly based on availability
-for DAY_NUM in range(NUM_DAYS_MONTH):
+for DAY_NUM in range(SCHEDULE_START_DAY - 1, NUM_DAYS_MONTH):
     count_threshold = NUM_DAYS_YEAR
     candidates = []
     candidate_selected = None
@@ -90,11 +90,11 @@ for DAY_NUM in range(NUM_DAYS_MONTH):
     if calendar.day_name[datetime(YEAR, MONTH_NUM, DAY_NUM + 1).weekday()] in WEEKDAYS:
         weekday_boolean = True
         for keys, RA in RA_DETAILS.items():
-            if RA.scheduled_weekdays < count_threshold:
-                count_threshold = RA.scheduled_weekdays
+            if RA.scheduled_total < count_threshold:
+                count_threshold = RA.scheduled_total
         while len(candidates) < WEEKDAY_STAFF_NUM:
             for keys, RA in RA_DETAILS.items():
-                if RA.scheduled_weekdays <= count_threshold and DAY_NUM + 1 in RA.availability_clean and RA.name not in candidates:
+                if RA.scheduled_total <= count_threshold and DAY_NUM + 1 in RA.availability_clean and RA.name not in candidates:
                     if DAY_NUM:
                         if RA.name not in schedule_dict[DAY_NUM]:
                             candidates.append(RA.name)
@@ -121,6 +121,7 @@ for DAY_NUM in range(NUM_DAYS_MONTH):
             # update weekday counts
             for i in range(len(candidates)):
                 RA_DETAILS[candidates[i]].scheduled_weekdays += 1
+                RA_DETAILS[candidates[i]].scheduled_total += 1
 
             # append RA names to the schedule management dictionary
             candidates_selected = []
@@ -150,6 +151,7 @@ for DAY_NUM in range(NUM_DAYS_MONTH):
                 # update weekday counts
                 for i in range(len(candidates_selected)):
                     RA_DETAILS[candidates[candidate_selection[i]]].scheduled_weekdays += 1
+                    RA_DETAILS[candidates[candidate_selection[i]]].scheduled_total += 1
 
                 # append RA names to the schedule management dictionary
                 schedule_dict[DAY_NUM + 1] = candidates_selected
@@ -174,6 +176,8 @@ for DAY_NUM in range(NUM_DAYS_MONTH):
                 for i in range(len(candidates_selected)):
                     RA_DETAILS[candidate_guaranteed].scheduled_weekdays += 1
                     RA_DETAILS[candidates[candidate_selection[i]]].scheduled_weekdays += 1
+                    RA_DETAILS[candidate_guaranteed].scheduled_total += 1
+                    RA_DETAILS[candidates[candidate_selection[i]]].scheduled_total += 1
 
                 # append RA names to the schedule management dictionary
                 candidates_selected.append(candidate_guaranteed)
@@ -181,11 +185,11 @@ for DAY_NUM in range(NUM_DAYS_MONTH):
     elif calendar.day_name[datetime(YEAR, MONTH_NUM, DAY_NUM + 1).weekday()] in WEEKENDS:
         weekday_boolean = False
         for keys, RA in RA_DETAILS.items():
-            if RA.scheduled_weekends < count_threshold:
-                count_threshold = RA.scheduled_weekends
+            if RA.scheduled_total < count_threshold:
+                count_threshold = RA.scheduled_total
         while len(candidates) < WEEKEND_STAFF_NUM:
             for keys, RA in RA_DETAILS.items():
-                if RA.scheduled_weekends <= count_threshold and DAY_NUM + 1 in RA.availability_clean and RA.name not in candidates:
+                if RA.scheduled_total <= count_threshold and DAY_NUM + 1 in RA.availability_clean and RA.name not in candidates:
                     if DAY_NUM:
                         if RA.name not in schedule_dict[DAY_NUM]:
                             candidates.append(RA.name)
@@ -212,6 +216,7 @@ for DAY_NUM in range(NUM_DAYS_MONTH):
             # update weekend counts
             for i in range(len(candidates)):
                 RA_DETAILS[candidates[i]].scheduled_weekends += 1
+                RA_DETAILS[candidates[i]].scheduled_total += 1
 
             # append RA names to the schedule management dictionary
             candidates_selected = []
@@ -241,6 +246,7 @@ for DAY_NUM in range(NUM_DAYS_MONTH):
                 # update weekend counts
                 for i in range(len(candidates_selected)):
                     RA_DETAILS[candidates[candidate_selection[i]]].scheduled_weekends += 1
+                    RA_DETAILS[candidates[candidate_selection[i]]].scheduled_total += 1
 
                 # append RA names to the schedule management dictionary
                 schedule_dict[DAY_NUM + 1] = candidates_selected
@@ -265,6 +271,8 @@ for DAY_NUM in range(NUM_DAYS_MONTH):
                 for i in range(len(candidates_selected)):
                     RA_DETAILS[candidate_guaranteed].scheduled_weekends += 1
                     RA_DETAILS[candidates[candidate_selection[i]]].scheduled_weekends += 1
+                    RA_DETAILS[candidate_guaranteed].scheduled_total += 1
+                    RA_DETAILS[candidates[candidate_selection[i]]].scheduled_total += 1
 
                 # append RA names to the schedule management dictionary
                 candidates_selected.append(candidate_guaranteed)
@@ -296,7 +304,7 @@ print("-------------------------------------------")
 
 # create calendar with names of RAs on duty labeled on respective date
 calendar_create = MplCalendar(YEAR, MONTH_NUM)
-for DAY_NUM in range(NUM_DAYS_MONTH):
+for DAY_NUM in range(SCHEDULE_START_DAY - 1, NUM_DAYS_MONTH):
     if calendar.day_name[datetime(YEAR, MONTH_NUM, DAY_NUM + 1).weekday()] in WEEKDAYS:
         for i in range(WEEKDAY_STAFF_NUM):
             calendar_create.add_event(DAY_NUM + 1, schedule_dict[DAY_NUM + 1][i])
