@@ -3,7 +3,7 @@ Create an RA Duty Schedule in seconds!
 
 **Author:** David Peterson - dpeterson23@vt.edu
 
-**Version:** V1.2 08-05-2021
+**Version:** V1.3 08-11-2021
 
 V1.1 - Partnerships Added - program prioritizes matching you with new RAs
 
