@@ -9,6 +9,8 @@ V1.1 - Partnerships Added - program prioritizes matching you with new RAs
 
 V1.2 - Custom number of staff for weekdays/weekends
 
+V1.3 - History Added - import cumulative number of worked weekdays/weekends
+
 If you experience any bugs/errors or would like to suggest an improvement, please contact me by emailing dpeterson23@vt.edu
 
 # How to Use
