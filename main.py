@@ -21,9 +21,12 @@ WEEKENDS = ['Friday', 'Saturday']
 NUM_DAYS_YEAR = 365
 
 # setting number of RAs on duty weekday/weekend
+MONTH_SELECT = 1  # 0 = current, 1 = next
 WEEKDAY_STAFF_NUM = int(input("How many RAs would you like scheduled on weekdays (0<=X<=3)? (Sun-Thurs): "))
 WEEKEND_STAFF_NUM = int(input("How many RAs would you like scheduled on weekends (0<=X<=3)? (Fri-Sat): "))
-MONTH_SELECT = 1  # 0 = current, 1 = next
+if not (0 <= WEEKDAY_STAFF_NUM <= 3) or not (0 <= WEEKEND_STAFF_NUM <= 3):
+    print("ERROR: Program only schedules between 0 and 3 RAs for weekdays/weekends.")
+    sys.exit(1)
 
 # month number and string
 MONTH_NUM = datetime.today().month + MONTH_SELECT % 12
