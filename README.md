@@ -84,6 +84,8 @@ Save the availability Excel file here. Now it is time to set up the History Exce
 
 Now to run the program! Click the Green Play button, fill in the prompts in the terminal accordingly and your Calendar will pop-up and automatically be saved to the Schedule folder for you to access and share with your RAs! In addition, your History Excel file will be updated with a running sum of worked weekdays/weekends automatically and will use these values to appropiately assign a balanced duty schedule over the course of the semester.
 
+PLEASE NOTE: Once the calendar pops up, hit the X in the upper corner and close the window so that the program continues and saves your History Excel file. Do not worry as your calendar will automatically be saved in the Schedule directory.
+
 Run Output: In the "Run" tab, at the bottom of the PyCharm IDE, you will see a series of outputs after you run the program providing you additional information about your newly generated RA Duty Calendar. From top to bottom, you will find a list of the RAs on duty each day (RAs Scheduled Dates), the number of weekdays/weekends each RA is scheduled for the month (RA Weekday/Weekend Counts), and the number of unique RAs each RA is partnered up with on duty (along with who specifically these unique RAs are) (RA Partnerships)!
 
 # Advanced Tips
