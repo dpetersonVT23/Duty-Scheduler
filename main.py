@@ -321,7 +321,7 @@ for index, RA in enumerate(RA_DETAILS.values()):
     history_master.loc[index, "Weekdays Total"] = RA.scheduled_weekdays
     history_master.loc[index, "Weekends Total"] = RA.scheduled_weekends
 
-    # reset
+    # reset cumulative weekdays/weekends
     # history_master.loc[index, "Weekdays Total"] = 0
     # history_master.loc[index, "Weekends Total"] = 0
 
