@@ -46,7 +46,6 @@ for i in range(NUM_DAYS_MONTH):
     schedule_dict[i + 1] = ['RA']
 
 # read and create Pandas data frame from Availability XLSX file
-# CHANGE THE NAME OF YOUR AVAILABILITY XLSX FILE HERE
 BUILDING = input("Input the building/community code (NHW, CHRNE_HARP, etc.): ").upper()
 MONTH = input("Input the current month name: ").lower()
 AVAILABILITY_FILE_PATH = "Availability/" + MONTH + "_" + BUILDING + ".xlsx"
@@ -57,7 +56,6 @@ if not os.path.isfile(AVAILABILITY_FILE_PATH):
 availability_master = pd.DataFrame(pd.read_excel(AVAILABILITY_FILE_PATH))
 
 # read and create Pandas data frame from History XLSX file
-# CHANGE THE NAME OF YOUR HISTORY XLSX FILE HERE
 HISTORY_FILE_PATH = "History/" + BUILDING + "_hist_test.xlsx"
 if not os.path.isfile(HISTORY_FILE_PATH):
     print("Incorrect file path. Check that the input file path exists and contains the correct month/building format.")
