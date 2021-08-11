@@ -335,6 +335,8 @@ for index, RA in enumerate(RA_DETAILS.values()):
     history_master.loc[index, "Weekends Total"] = RA.scheduled_weekends
 
     # reset cumulative weekdays/weekends
+    print("----------------------")
+    print("Please enter 'n' if this is mid-semester, you should only reset cumulative counts at the beginning or end of a semester.")
     reset = input("Would you like to reset cumulative worked weekdays/weekends? [y/n]: ")
     if reset == 'y':
         history_master.loc[index, "Weekdays Total"] = 0
