@@ -15,15 +15,15 @@ If you experience any bugs/errors or would like to suggest an improvement, pleas
 
 # How to Use
 1) Download and Set-Up PyCharm (Free)
-2) Create your Availability Excel file in the correct format
-3) Save the Availability Excel file in the correct location and run the program
+2) Create your Availability Excel file and History Excel in the correct format
+3) Save the Availability Excel file in the correct location and run the program once a month
 4) View your automatically created duty schedule in a calendar like this!
 
 ![](images/calendar.png)
 
 
 ## PyCharm Set-Up
-You only have to do these steps for a first-time set-up. The steps below are very general, if you have any trouble please reference this site for detailed instructions for set-up procedures with PyCharm (compatible with Windows and Mac): https://www.jetbrains.com/help/pycharm/quick-start-guide.html
+You only have to do these steps for a first-time set-up. The steps below are very specific, if you have any trouble please reference this site for detailed instructions for set-up procedures with PyCharm (compatible with Windows and Mac): https://www.jetbrains.com/help/pycharm/quick-start-guide.html
 
 If you have persistent trouble setting this up, feel free to email me and I am happy to help!
 
@@ -64,25 +64,25 @@ This is the last step, you are almost done with this one-time set-up!
 6) Click OK and you're Python environment is all ready to go!
 
 ## Running the Program
-Create a Google form that allows residents to choose which dates they are not available, please see this example form for August: https://forms.gle/tvbEhKGmkEREgkdB7 - You will see a section to mark days UNAVAILABLE and NOT IDEAL, the program only uses days an RA is UNAVAILABLE to schedule, use dates for NOT IDEAL to find backup RAs if you don't have enough RAs for a given day.
+Create a Google form that allows residents to choose which dates they are not available, please see this example form for August (credit Illa Rochez): https://forms.gle/tvbEhKGmkEREgkdB7 - You will see a section to mark days UNAVAILABLE and NOT IDEAL, the program only uses days an RA is UNAVAILABLE to schedule, use dates for NOT IDEAL to find backup RAs if you don't have enough RAs on a given day.
 
-Please ensure the options for selecting when an RA is busy is formatting as "DAY: MONTH/DAY/YEAR". (e.g., Sunday: 08/15/2021)
+Please ensure the options for selecting when an RA is busy is formatted as "DAY: MONTH/DAY/YEAR". (e.g., Sunday: 08/15/2021)
 
-You will be able to export data from the Google form responses to be used as the Availability Excel file for the program. This is what the output file might look like, however, here are some things you want to make sure of before inputting it to the program.
+You will be able to export data from the Google form responses to be used as the Availability Excel file for the program. This is what the output file might look like, however, there are some things you want to make sure of before inputting it to the program.
 
 ![](images/excel_1.png)
 
 1) Ensure the RA Names column header is "First Name"
 2) Ensure the days the RA is not available column header is "Days"
-3) Ensure the name of the Availability Excel file is "monthName_buildingCode.xlsx" - (The building code is ultimately up to you, just remember how you name the file for when you run the program)
+3) Ensure the name of the Availability Excel file is "monthName_buildingCommunityCode.xlsx" - (The building code is ultimately up to you, just remember how you name the file for when you run the program as you will be prompted for the building code in the terminal - see existing examples in the Availability directory)
 
 Locate where in your file explorer you set-up the Python program when you clicked "Get from Version Control" or "Get from VCS". Open the RA_Duty_Scheduler folder. Here you will see an Availability folder and a History folder, this is where you will place your excel files that manage availability for RAs and cumulative weekdays/weekends worked.
 
-Save the availability Excel file here. Now it is time to set up the History Excel file. Please reference the image below to set-up your History Excel file, please name the column headers exactly how they appear in the image below for the program to work correctly. Also, please ensure name the History Excel file is "buildingCode_hist.xlsx".
+Save the availability Excel file here. Now it is time to set up the History Excel file. Please reference the image below to set-up your History Excel file (you only have to do this once as this file updates every time the program is run), please name the column headers exactly how they appear in the image below for the program to work correctly. Also, please ensure name the History Excel file is "buildingCommunityCode_hist.xlsx".
 
 ![](images/excel_2.png)
 
-Now to run the program! Click the Green Play button, fill in the prompts in the terminal accordingly and your Calendar will pop-up and automatically be saved to the Schedule folder for you to access and share with your RAs! In addition, your History Excel file will be updated with a running sum of worked weekdays/weekends automatically and will use these values to appropiately assign a balanced duty schedule over the course of the semester.
+Now to run the program! Click the Green Play button, fill in the prompts in the terminal accordingly, and your Calendar will pop-up and automatically be saved to the Schedule folder for you to access and share with your RAs! In addition, your History Excel file will be updated with a running sum of worked weekdays/weekends automatically and will use these values to appropiately assign a balanced duty schedule over the course of the semester.
 
 PLEASE NOTE: Once the calendar pops up, hit the X in the upper corner and close the window so that the program continues and saves your History Excel file. Do not worry as your calendar will automatically be saved in the Schedule directory.
 
