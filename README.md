@@ -66,6 +66,8 @@ This is the last step, you are almost done with this one-time set-up!
 ## Running the Program
 Create a Google form that allows residents to choose which dates they are not available, please see this example form for August: https://forms.gle/tvbEhKGmkEREgkdB7
 
+Please ensure the options for selecting when an RA is busy is formatting as "DAY: MONTH/DAY/YEAR". (e.g., Sunday: 08/15/2021)
+
 You will be able to export data from the Google form responses to be used as the Availability Excel file for the program. This is what the output file might look like, however, here are some things you want to make sure of before inputting it to the program.
 
 ![](images/excel_1.png)
