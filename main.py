@@ -45,7 +45,8 @@ for i in range(NUM_DAYS_MONTH):
 # read and create Pandas data frame from Availability XLSX file
 # CHANGE THE NAME OF YOUR AVAILABILITY XLSX FILE HERE
 BUILDING = "CHRNE_HARP"  # NHW or CHRNE_HARP
-AVAILABILITY_FILE_PATH = "Availability/august_" + BUILDING + ".xlsx"
+MONTH = "august"
+AVAILABILITY_FILE_PATH = "Availability/" + MONTH + "_" + BUILDING + ".xlsx"
 availability_master = pd.DataFrame(pd.read_excel(AVAILABILITY_FILE_PATH))
 
 # read and create Pandas data frame from History XLSX file
