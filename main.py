@@ -21,15 +21,16 @@ WEEKENDS = ['Friday', 'Saturday']
 NUM_DAYS_YEAR = 365
 
 # setting number of RAs on duty weekday/weekend
-WEEKDAY_STAFF_NUM = 2
-WEEKEND_STAFF_NUM = 2
+WEEKDAY_STAFF_NUM = int(input("How many RAs would you like scheduled on weekdays (0<=X<=3)? (Sun-Thurs): "))
+WEEKEND_STAFF_NUM = int(input("How many RAs would you like scheduled on weekends (0<=X<=3)? (Fri-Sat): "))
+MONTH_SELECT = 1  # 0 = current, 1 = next
 
 # month number and string
-MONTH_NUM = datetime.today().month + 1 % 12
+MONTH_NUM = datetime.today().month + MONTH_SELECT % 12
 MONTH_STRING = calendar.month_name[MONTH_NUM]
 
 # number of days in current month
-NUM_DAYS_MONTH = calendar.monthrange(datetime.today().year, datetime.today().month + 1 % 12)[1]
+NUM_DAYS_MONTH = calendar.monthrange(datetime.today().year, datetime.today().month + MONTH_SELECT % 12)[1]
 
 # schedule bounds - useful for partial months of duty scheduling
 SCHEDULE_START_DAY = 1
@@ -43,27 +44,60 @@ for i in range(NUM_DAYS_MONTH):
 
 # read and create Pandas data frame from Availability XLSX file
 # CHANGE THE NAME OF YOUR AVAILABILITY XLSX FILE HERE
-AVAILABILITY_FILE_PATH = "Availability/myAvailabilityExcelFile.xlsx"
+BUILDING = input("Input the building community (NHW, CHRNE_HARP, etc.): ").upper()
+MONTH = input("Input the current month name: ").lower()
+AVAILABILITY_FILE_PATH = "Availability/" + MONTH + "_" + BUILDING + ".xlsx"
+if not os.path.isfile(AVAILABILITY_FILE_PATH):
+    print("Incorrect availability file path. Check that the input file path exists and contains the correct month/building format.")
+    print("Format example: monthName_buildingCode.xlsx")
+    sys.exit(1)
 availability_master = pd.DataFrame(pd.read_excel(AVAILABILITY_FILE_PATH))
 
 # read and create Pandas data frame from History XLSX file
 # CHANGE THE NAME OF YOUR HISTORY XLSX FILE HERE
-HISTORY_FILE_PATH = "History/CHRNE_NHW_HARP_hist.xlsx"
+HISTORY_FILE_PATH = "History/" + BUILDING + "_hist.xlsx"
+if not os.path.isfile(HISTORY_FILE_PATH):
+    print("Incorrect file path. Check that the input file path exists and contains the correct month/building format.")
+    print("Format example: buildingCode_hist.xlsx")
+    sys.exit(1)
 history_master = pd.DataFrame(pd.read_excel(HISTORY_FILE_PATH))
 
 # list of RA names from Availability XLSX file, cumulative weekdays, cumulative weekends, cumulative partnerships
-RA_NAMES = availability_master["RA Name"].tolist()
+RA_NAMES = availability_master["First Name"].tolist()
 RA_CUM_WEEKDAYS = history_master["Weekdays Total"].tolist()
 RA_CUM_WEEKENDS = history_master["Weekends Total"].tolist()
+
+# list of days the RA's are busy
+RA_BUSY_DAYS = availability_master["Days"].tolist()
+
+# number of days in current month
+NUM_DAYS_MONTH = calendar.monthrange(datetime.today().year, datetime.today().month + MONTH_SELECT % 12)[1]
 
 # create RA object from ResidentAdviser class for each RA in Availability XLSX file
 RA_DETAILS = {}
 for i in range(len(RA_NAMES)):
-    RA_DETAILS[RA_NAMES[i]] = ResidentAdviser(RA_NAMES[i], availability_master.iloc[i, SCHEDULE_START_DAY:MONTH_END_DAY + 1].tolist(), RA_CUM_WEEKDAYS[i], RA_CUM_WEEKENDS[i])
+    days_ints = []
+    days_ints_strings = []
+    availability_excel = []
+    days_strings = RA_BUSY_DAYS[i]
+    if isinstance(days_strings, str):
+        days_strings_split = days_strings.split("/")
 
+    for j in range(len(days_strings_split)):
+        if j % 2:
+            days_ints_strings.append(days_strings_split[j])
+
+    for k in range(len(days_ints_strings)):
+        days_ints.append(int(days_ints_strings[k]))
+
+    for day in range(1, NUM_DAYS_MONTH + 1):
+        if day not in days_ints:
+            availability_excel.append(day)
+
+    RA_DETAILS[RA_NAMES[i]] = ResidentAdviser(RA_NAMES[i], availability_excel, RA_CUM_WEEKDAYS[i], RA_CUM_WEEKENDS[i])
 
 # determine candidates for scheduling on each day of the current month + schedule accordingly based on availability
-for DAY_NUM in range(NUM_DAYS_MONTH):
+for DAY_NUM in range(SCHEDULE_START_DAY - 1, NUM_DAYS_MONTH):
     count_threshold = NUM_DAYS_YEAR
     candidates = []
     candidate_selected = None
@@ -280,7 +314,7 @@ print("-------------------------------------------")
 
 # create calendar with names of RAs on duty labeled on respective date
 calendar_create = MplCalendar(YEAR, MONTH_NUM)
-for DAY_NUM in range(NUM_DAYS_MONTH):
+for DAY_NUM in range(SCHEDULE_START_DAY - 1, NUM_DAYS_MONTH):
     if calendar.day_name[datetime(YEAR, MONTH_NUM, DAY_NUM + 1).weekday()] in WEEKDAYS:
         for i in range(WEEKDAY_STAFF_NUM):
             calendar_create.add_event(DAY_NUM + 1, schedule_dict[DAY_NUM + 1][i])
@@ -289,7 +323,7 @@ for DAY_NUM in range(NUM_DAYS_MONTH):
             calendar_create.add_event(DAY_NUM + 1, schedule_dict[DAY_NUM + 1][i])
 calendar_create.show()
 
-calendar_save_path = MONTH_STRING + "_" + str(YEAR) + "_duty_schedule"
+calendar_save_path = MONTH_STRING + "_" + str(YEAR) + "_duty_schedule_" + BUILDING
 calendar_create.save("Schedule/" + calendar_save_path)
 
 # update history
@@ -297,10 +331,12 @@ for index, RA in enumerate(RA_DETAILS.values()):
     history_master.loc[index, "Weekdays Total"] = RA.scheduled_weekdays
     history_master.loc[index, "Weekends Total"] = RA.scheduled_weekends
 
-    # reset
-    # history_master.loc[index, "Weekdays Total"] = 0
-    # history_master.loc[index, "Weekends Total"] = 0
+    # reset cumulative weekdays/weekends
+    reset = input("Would you like to reset cumulative worked weekdays/weekends? [y/n]: ")
+    if reset == 'y':
+        history_master.loc[index, "Weekdays Total"] = 0
+        history_master.loc[index, "Weekends Total"] = 0
 
 # remove old history file and save new history file for future additions
-os.remove("History/CHRNE_NHW_HARP_hist.xlsx")
-history_master.to_excel('History/CHRNE_NHW_HARP_hist.xlsx', index=False)
+os.remove(HISTORY_FILE_PATH)
+history_master.to_excel(HISTORY_FILE_PATH, index=False)
