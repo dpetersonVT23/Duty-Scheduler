@@ -8,6 +8,7 @@ import calendar
 import pandas as pd
 import sys
 import random
+import os
 
 from datetime import datetime
 from RA import ResidentAdviser
@@ -314,3 +315,16 @@ calendar_create.show()
 
 calendar_save_path = MONTH_STRING + "_" + str(YEAR) + "_duty_schedule"
 calendar_create.save("Schedule/" + calendar_save_path)
+
+# update history
+for index, RA in enumerate(RA_DETAILS.values()):
+    history_master.loc[index, "Weekdays Total"] = RA.scheduled_weekdays
+    history_master.loc[index, "Weekends Total"] = RA.scheduled_weekends
+
+    # reset
+    # history_master.loc[index, "Weekdays Total"] = 0
+    # history_master.loc[index, "Weekends Total"] = 0
+
+# remove old history file and save new history file for future additions
+os.remove("History/CHRNE_NHW_HARP_hist.xlsx")
+history_master.to_excel('History/CHRNE_NHW_HARP_hist.xlsx', index=False)
