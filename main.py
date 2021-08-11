@@ -58,7 +58,7 @@ availability_master = pd.DataFrame(pd.read_excel(AVAILABILITY_FILE_PATH))
 
 # read and create Pandas data frame from History XLSX file
 # CHANGE THE NAME OF YOUR HISTORY XLSX FILE HERE
-HISTORY_FILE_PATH = "History/" + BUILDING + "_hist.xlsx"
+HISTORY_FILE_PATH = "History/" + BUILDING + "_hist_test.xlsx"
 if not os.path.isfile(HISTORY_FILE_PATH):
     print("Incorrect file path. Check that the input file path exists and contains the correct month/building format.")
     print("Format example: buildingCode_hist.xlsx")
@@ -329,15 +329,15 @@ calendar_create.show()
 calendar_save_path = MONTH_STRING + "_" + str(YEAR) + "_duty_schedule_" + BUILDING
 calendar_create.save("Schedule/" + calendar_save_path)
 
+# reset cumulative weekdays/weekends
+print("***Please enter 'n' if this is mid-semester, you should only reset cumulative counts at the beginning or end of a semester.***")
+reset = input("Would you like to reset cumulative worked weekdays/weekends? [y/n]: ")
+
 # update history
 for index, RA in enumerate(RA_DETAILS.values()):
     history_master.loc[index, "Weekdays Total"] = RA.scheduled_weekdays
     history_master.loc[index, "Weekends Total"] = RA.scheduled_weekends
 
-    # reset cumulative weekdays/weekends
-    print("----------------------")
-    print("Please enter 'n' if this is mid-semester, you should only reset cumulative counts at the beginning or end of a semester.")
-    reset = input("Would you like to reset cumulative worked weekdays/weekends? [y/n]: ")
     if reset == 'y':
         history_master.loc[index, "Weekdays Total"] = 0
         history_master.loc[index, "Weekends Total"] = 0
