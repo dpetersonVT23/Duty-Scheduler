@@ -44,12 +44,13 @@ for i in range(NUM_DAYS_MONTH):
 
 # read and create Pandas data frame from Availability XLSX file
 # CHANGE THE NAME OF YOUR AVAILABILITY XLSX FILE HERE
-AVAILABILITY_FILE_PATH = "Availability/august.xlsx"
+BUILDING = "CHRNE_HARP"  # NHW or CHRNE_HARP
+AVAILABILITY_FILE_PATH = "Availability/august_" + BUILDING + ".xlsx"
 availability_master = pd.DataFrame(pd.read_excel(AVAILABILITY_FILE_PATH))
 
 # read and create Pandas data frame from History XLSX file
 # CHANGE THE NAME OF YOUR HISTORY XLSX FILE HERE
-HISTORY_FILE_PATH = "History/CHRNE_NHW_HARP_hist.xlsx"
+HISTORY_FILE_PATH = "History/" + BUILDING + "_hist.xlsx"
 history_master = pd.DataFrame(pd.read_excel(HISTORY_FILE_PATH))
 
 # list of RA names from Availability XLSX file, cumulative weekdays, cumulative weekends, cumulative partnerships
@@ -313,7 +314,7 @@ for DAY_NUM in range(SCHEDULE_START_DAY - 1, NUM_DAYS_MONTH):
             calendar_create.add_event(DAY_NUM + 1, schedule_dict[DAY_NUM + 1][i])
 calendar_create.show()
 
-calendar_save_path = MONTH_STRING + "_" + str(YEAR) + "_duty_schedule"
+calendar_save_path = MONTH_STRING + "_" + str(YEAR) + "_duty_schedule_" + BUILDING
 calendar_create.save("Schedule/" + calendar_save_path)
 
 # update history
@@ -326,5 +327,5 @@ for index, RA in enumerate(RA_DETAILS.values()):
     # history_master.loc[index, "Weekends Total"] = 0
 
 # remove old history file and save new history file for future additions
-os.remove("History/CHRNE_NHW_HARP_hist.xlsx")
-history_master.to_excel('History/CHRNE_NHW_HARP_hist.xlsx', index=False)
+os.remove(HISTORY_FILE_PATH)
+history_master.to_excel(HISTORY_FILE_PATH, index=False)
