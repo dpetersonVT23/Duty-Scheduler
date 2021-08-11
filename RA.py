@@ -21,7 +21,7 @@ class ResidentAdviser:
         self.partnerships = []                  # list to hold names of RAs an RA has had duty with for the given month
 
     # method to create a list of dates the RA is available for the given month
-    def cleanAvailability(self):
-        for index, value in enumerate(self.availability_raw):
-            if value != 'N' and value != 'n':
-                self.availability_clean.append(index+1)
+    # def cleanAvailability(self):
+    #     for index, value in enumerate(self.availability_raw):
+    #         if value != 'N' and value != 'n':
+    #             self.availability_clean.append(index+1)

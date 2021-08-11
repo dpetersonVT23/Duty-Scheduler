@@ -21,9 +21,9 @@ WEEKENDS = ['Friday', 'Saturday']
 NUM_DAYS_YEAR = 365
 
 # setting number of RAs on duty weekday/weekend
-WEEKDAY_STAFF_NUM = 1
-WEEKEND_STAFF_NUM = 2
-MONTH_SELECT = 0  # 0 = current, 1 = next
+WEEKDAY_STAFF_NUM = int(input("How many RAs would you like scheduled on weekdays (0<=X<=3)? (Sun-Thurs): "))
+WEEKEND_STAFF_NUM = int(input("How many RAs would you like scheduled on weekends (0<=X<=3)? (Fri-Sat): "))
+MONTH_SELECT = 1  # 0 = current, 1 = next
 
 # month number and string
 MONTH_NUM = datetime.today().month + MONTH_SELECT % 12
@@ -33,7 +33,7 @@ MONTH_STRING = calendar.month_name[MONTH_NUM]
 NUM_DAYS_MONTH = calendar.monthrange(datetime.today().year, datetime.today().month + MONTH_SELECT % 12)[1]
 
 # schedule bounds - useful for partial months of duty scheduling
-SCHEDULE_START_DAY = 14
+SCHEDULE_START_DAY = 1
 MONTH_END_DAY = NUM_DAYS_MONTH
 
 # dictionary to hold names of RA scheduled for each date
@@ -44,10 +44,8 @@ for i in range(NUM_DAYS_MONTH):
 
 # read and create Pandas data frame from Availability XLSX file
 # CHANGE THE NAME OF YOUR AVAILABILITY XLSX FILE HERE
-BUILDING = input("Please input the building community (NHW, CHRNE_HARP): ").upper()
-# BUILDING = "CHRNE_HARP"  # NHW or CHRNE_HARP
-MONTH = input("Please input the current month: ").lower()
-# MONTH = "august"
+BUILDING = input("Input the building community (NHW, CHRNE_HARP, etc.): ").upper()
+MONTH = input("Input the current month name: ").lower()
 AVAILABILITY_FILE_PATH = "Availability/" + MONTH + "_" + BUILDING + ".xlsx"
 if not os.path.isfile(AVAILABILITY_FILE_PATH):
     print("Incorrect availability file path. Check that the input file path exists and contains the correct month/building format.")
