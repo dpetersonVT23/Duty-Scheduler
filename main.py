@@ -47,7 +47,7 @@ for i in range(NUM_DAYS_MONTH):
 
 # read and create Pandas data frame from Availability XLSX file
 # CHANGE THE NAME OF YOUR AVAILABILITY XLSX FILE HERE
-BUILDING = input("Input the building community (NHW, CHRNE_HARP, etc.): ").upper()
+BUILDING = input("Input the building/community code (NHW, CHRNE_HARP, etc.): ").upper()
 MONTH = input("Input the current month name: ").lower()
 AVAILABILITY_FILE_PATH = "Availability/" + MONTH + "_" + BUILDING + ".xlsx"
 if not os.path.isfile(AVAILABILITY_FILE_PATH):
