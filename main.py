@@ -81,6 +81,8 @@ for i in range(len(RA_NAMES)):
     days_ints_strings = []
     availability_excel = []
     days_strings = RA_BUSY_DAYS[i]
+    
+    # parse Google form output for RA availability
     if isinstance(days_strings, str):
         days_strings_split = days_strings.split("/")
 
