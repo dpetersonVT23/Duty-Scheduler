@@ -74,7 +74,7 @@ You will be able to export data from the Google form responses to be used as the
 
 1) Ensure the RA Names column header is "First Name"
 2) Ensure the days the RA is not available column header is "Days"
-3) Ensure the name of the Availability Excel file is "monthName_buildingCommunityCode.xlsx" - (The building code is ultimately up to you, just remember how you name the file for when you run the program as you will be prompted for the building code in the terminal - see existing examples in the Availability directory)
+3) Ensure the name of the Availability Excel file is "monthName_buildingCommunityCode.xlsx" - (The building code is ultimately up to you, just remember how you name the file for when you run the program as you will be prompted for the building code in the terminal - see existing examples in the Availability directory - ensure the month name is LOWERCASE and the building/community code is UPPERCASE)
 
 Locate where in your file explorer you set-up the Python program when you clicked "Get from Version Control" or "Get from VCS". Open the RA_Duty_Scheduler folder. Here you will see an Availability folder and a History folder, this is where you will place your excel files that manage availability for RAs and cumulative weekdays/weekends worked.
 
