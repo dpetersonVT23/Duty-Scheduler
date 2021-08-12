@@ -64,7 +64,7 @@ This is the last step, you are almost done with this one-time set-up!
 6) Click OK and you're Python environment is all ready to go!
 
 ## Running the Program
-Create a Google form that allows residents to choose which dates they are not available, please see this example form for August (credit Illa Rochez): https://forms.gle/tvbEhKGmkEREgkdB7 - You will see a section to mark days UNAVAILABLE and NOT IDEAL, the program only uses days an RA is UNAVAILABLE to schedule, use dates for NOT IDEAL to find backup RAs if you don't have enough RAs on a given day.
+Create a Google form that allows residents to choose which dates they are **not** available. Please see this example form for August (credit Illa Rochez): https://forms.gle/tvbEhKGmkEREgkdB7 - You will see a section to mark days UNAVAILABLE and NOT IDEAL, the program only uses days an RA is UNAVAILABLE to schedule. Use dates for NOT IDEAL to find backup RAs if you don't have enough RAs on a given day.
 
 Please ensure the options for selecting when an RA is busy is formatted as "DAY: MONTH/DAY/YEAR". (e.g., Sunday: 08/15/2021)
 
@@ -72,13 +72,13 @@ You will be able to export data from the Google form responses to be used as the
 
 ![](images/excel_1.png)
 
-1) Ensure the RA Names column header is "First Name"
-2) Ensure the days the RA is not available column header is "Days"
+1) Ensure the column header for the RA Names is "First Name"
+2) Ensure the column header for the days the RA is not available is "Days"
 3) Ensure the name of the Availability Excel file is "monthName_buildingCommunityCode.xlsx" - (The building code is ultimately up to you, just remember how you name the file for when you run the program as you will be prompted for the building code in the terminal - see existing examples in the Availability directory - ensure the month name is LOWERCASE and the building/community code is UPPERCASE)
 
 Locate where in your file explorer you set-up the Python program when you clicked "Get from Version Control" or "Get from VCS". Open the RA_Duty_Scheduler folder. Here you will see an Availability folder and a History folder, this is where you will place your excel files that manage availability for RAs and cumulative weekdays/weekends worked.
 
-Save the availability Excel file here. Now it is time to set up the History Excel file. Please reference the image below to set-up your History Excel file (you only have to do this once as this file updates every time the program is run), please name the column headers exactly how they appear in the image below for the program to work correctly. Also, please ensure name the History Excel file is "buildingCommunityCode_hist.xlsx".
+Save the availability Excel file here. Now it is time to set up the History Excel file. Please reference the image below to set-up your History Excel file (you only have to do this once as this file updates automatically every time the program is run). Please name the column headers exactly how they appear in the image below for the program to work correctly. Also, please ensure the name of the History Excel file is "buildingCommunityCode_hist.xlsx", where the building/community code is UPPERCASE.
 
 ![](images/excel_2.png)
 
@@ -86,20 +86,23 @@ Now to run the program! Click the Green Play button, fill in the prompts in the 
 
 PLEASE NOTE: Once the calendar pops up, hit the X in the upper corner and close the window so that the program continues and saves your History Excel file. Do not worry as your calendar will automatically be saved in the Schedule directory.
 
-Run Output: In the "Run" tab, at the bottom of the PyCharm IDE, you will see a series of outputs after you run the program providing you additional information about your newly generated RA Duty Calendar. From top to bottom, you will find a list of the RAs on duty each day (RAs Scheduled Dates), the number of weekdays/weekends each RA is scheduled for the month (RA Weekday/Weekend Counts), and the number of unique RAs each RA is partnered up with on duty (along with who specifically these unique RAs are) (RA Partnerships)!
+Run Output: In the "Run" tab, at the bottom of the PyCharm IDE, you will see a series of outputs after you run the program providing you additional information about your newly generated RA Duty Calendar. From top to bottom, you will find a list of the RAs on duty each day (RAs Scheduled Dates), the cumulative number of weekdays/weekends each RA has been scheduled at that point in the semester (RA Weekday/Weekend Counts), and the number of unique RAs each RA is partnered up with on duty (along with who specifically these unique RAs are) (RA Partnerships)!
 
 # Advanced Tips
+
+## Current vs Next Month Scheduling
+The program is designed by default to create a duty schedule for the following/next month (e.g., if the current month is September, when you run the program it will make a duty schedule for October). However, sometimes you may have to create the schedule late and you need to create a schedule for the current month for any given reason (e.g., if the current month is September, when you run the program, you want to make a duty schedule for September). To modify this between Current vs Next Month, open the program in PyCharm and locate LINE 24 in main.py, here you can change the value for the variable "MONTH_SELECT". If this value is set to 0, the program will schedule duty for the current month; if this value is set to 1, the program will schedule duty for the next month (1 is the default value).
 
 ## Partial Month Scheduling
 Want to schedule only the first part or second part of the month? You can do that!
 
-Modify Start Date: Open the program in PyCharm and locate LINE 36 in main.py, here you can change the duty scheduling start date. The default value is 1, representing the start of the month, but if you'd like to start scheduling duty on the 14th for example, set this value to 14.
+Modify Start Date: Open the program in PyCharm and locate LINE 39 in main.py, here you can change the duty scheduling start date. The default value is 1, representing the start of the month, but if you'd like to start scheduling duty on the 14th for example, set this value to 14.
 
-Modify End Date: Open the program in PyCharm and locate LINE 37 in main.py, here you can change the duty scheduling end date. The default value is NUM_DAYS_MONTH (representing the number of days in the current month), representing the end of the month, but if you'd like to end scheduling duty on the 28th for example, set this value to 28 (this will include scheduling duty on the 28th).
+Modify End Date: Open the program in PyCharm and locate LINE 40 in main.py, here you can change the duty scheduling end date. The default value is NUM_DAYS_MONTH (representing the number of days in the current month), representing the end of the month. However, if you'd like to end scheduling duty on the 28th for example, set this value to 28 (this will include scheduling duty on the 28th).
 
 ## Not Enough Candidates Warning
 If you get a warning that looks like this in the "Run" tab at the bottom of the PyCharm IDE, this means there are not enough RAs available for duty on the specified day. A warning like this may appear as the following:
 
-NOT ENOUGH CANDIDATES FOR JULY 22 (WEEKDAY) - Currently have 1 candidate(s)
+NOT ENOUGH CANDIDATES FOR JULY 22 (WEEKDAY) - Currently have 1 candidate(s) | Candidates: [nameOfCurrentCandidates]
 
-This means that on July 22nd, only 1 of your RAs has noted that they are available for duty but you need atleast 2 to be available. Reach out and find someone else who is willing to fill in and be the second RA on duty for that day!
+This means that on July 22nd, only 1 of your RAs has noted that they are available for duty but you might need atleast 2 to be available. Reach out and find someone else who is willing to fill in and be the second RA on duty for that day!
