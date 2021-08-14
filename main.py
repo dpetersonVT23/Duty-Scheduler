@@ -88,6 +88,8 @@ for i in range(len(RA_NAMES)):
     days_ints_strings = []
     availability_excel = []
     days_strings = RA_BUSY_DAYS[i]
+    
+    # parse Google form output for RA availability
     if isinstance(days_strings, str):
         days_strings_split = days_strings.split("/")
 
@@ -335,8 +337,8 @@ calendar_save_path = MONTH_STRING + "_" + str(YEAR) + "_duty_schedule_" + BUILDI
 calendar_create.save("Schedule/" + calendar_save_path)
 
 # reset cumulative weekdays/weekends
-print("***Please enter 'n' if this is mid-semester, you should only reset cumulative counts at the beginning or end of a semester.***")
-reset = input("Would you like to reset cumulative worked weekdays/weekends? [y/n]: ")
+print("***Please enter 'n' if this is mid-semester, you should only reset cumulative worked weekdays/weekends to 0 at the beginning or end of a semester.***")
+reset = input("Would you like to reset cumulative worked weekdays/weekends for all RAs? [y/n]: ")
 
 # update history
 for index, RA in enumerate(RA_DETAILS.values()):
