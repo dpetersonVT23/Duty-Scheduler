@@ -91,7 +91,7 @@ Now to run the program! Click the Green Play button, fill in the prompts in the 
 # Advanced Tips
 
 ## Checking for Updates
-It is smart to check for any updates (improvements) made to the code before you run the program to schedule RA duty for the month. To check for any updates, locate the Diagonal Blue Arrow located in the upper-right corner of the PyCharm IDE. When you hover over this arrow it will say "Update Project...". Click on this icon, select OK, and your program will check for updates (automatically updating as necessary). A small pop-up will appear in the lower-right corner of the screen confirming once the program has finishing updating.
+It is smart to check for any updates (improvements) made to the code before you run the program to schedule RA duty for the month. To check for any updates, locate the Diagonal Blue Arrow located in the upper-right corner of the PyCharm IDE. When you hover over this arrow it will say "Update Project...". Click on the arrow icon, select OK, and your program will check for updates (automatically updating as necessary). A small pop-up will appear in the lower-right corner of the screen confirming once the program has finishing updating.
 
 ## Partial Month Scheduling
 The program is set to schedule RA duty for the entire month, however, sometimes you may only want to schedule for part of the month...you can do that!
