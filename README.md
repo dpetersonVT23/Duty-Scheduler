@@ -84,21 +84,18 @@ Save the availability Excel file here. Now it is time to set up the History Exce
 
 Now to run the program! Click the Green Play button, fill in the prompts in the terminal accordingly, and your Calendar will pop-up and automatically be saved to the Schedule folder for you to access and share with your RAs! In addition, your History Excel file will be updated with a running sum of worked weekdays/weekends automatically and will use these values to appropiately assign a balanced duty schedule over the course of the semester.
 
-PLEASE NOTE: Once the calendar pops up, hit the X in the upper corner and close the window so that the program continues and saves your History Excel file. Do not worry as your calendar will automatically be saved in the Schedule directory.
+**IMPORTANT NOTE:** Once the calendar pops up, hit the X in the upper corner and close the window so that the program continues and saves your History Excel file. Do not worry as your calendar will automatically be saved in the Schedule directory.
 
-Run Output: In the "Run" tab, at the bottom of the PyCharm IDE, you will see a series of outputs after you run the program providing you additional information about your newly generated RA Duty Calendar. From top to bottom, you will find a list of the RAs on duty each day (RAs Scheduled Dates), the cumulative number of weekdays/weekends each RA has been scheduled at that point in the semester (RA Weekday/Weekend Counts), the number of unique RAs each RA is partnered up with on duty (along with who specifically these unique RAs are) (RA Partnerships), and the number of days the RA submitted that they were available for a given month (RA Availability)!
+**Run Output:** In the "Run" tab, at the bottom of the PyCharm IDE, you will see a series of outputs after you run the program providing you additional information about your newly generated RA Duty Calendar. From top to bottom, you will find a list of the RAs on duty each day (RAs Scheduled Dates), the cumulative number of weekdays/weekends each RA has been scheduled at that point in the semester (RA Weekday/Weekend Counts), the number of unique RAs each RA is partnered up with on duty (along with who specifically these unique RAs are) (RA Partnerships), and the number of days the RA submitted that they were available for a given month (RA Availability)!
 
 # Advanced Tips
 
-## Current vs Next Month Scheduling
-The program is designed by default to create a duty schedule for the following/next month (e.g., if the current month is September, when you run the program it will make a duty schedule for October). However, sometimes you may have to create the schedule late and you need to create a schedule for the current month for any given reason (e.g., if the current month is September, when you run the program, you want to make a duty schedule for September). To modify this between Current vs Next Month, open the program in PyCharm and locate LINE 24 in main.py, here you can change the value for the variable "MONTH_SELECT". If this value is set to 0, the program will schedule duty for the current month; if this value is set to 1, the program will schedule duty for the next month (1 is the default value).
-
 ## Partial Month Scheduling
-Want to schedule only the first part or second part of the month? You can do that!
+The program is set to schedule RA duty for the entire month, however, sometimes you may only want to schedule for part of the month...you can do that!
 
-Modify Start Date: Open the program in PyCharm and locate LINE 39 in main.py, here you can change the duty scheduling start date. The default value is 1, representing the start of the month, but if you'd like to start scheduling duty on the 14th for example, set this value to 14.
+**Modify Start Date:** Open the program in PyCharm and locate LINE 39 in main.py, here you can change the duty scheduling start date. The default value is 1, representing the start of the month, but if you'd like to start scheduling duty on the 14th for example, set this value to 14.
 
-Modify End Date: Open the program in PyCharm and locate LINE 40 in main.py, here you can change the duty scheduling end date. The default value is NUM_DAYS_MONTH (representing the number of days in the current month), representing the end of the month. However, if you'd like to end scheduling duty on the 28th for example, set this value to 28 (this will include scheduling duty on the 28th).
+**Modify End Date:** Open the program in PyCharm and locate LINE 40 in main.py, here you can change the duty scheduling end date. The default value is NUM_DAYS_MONTH (representing the number of days in the current month), representing the end of the month. However, if you'd like to end scheduling duty on the 28th for example, set this value to 28 (this will include scheduling duty on the 28th).
 
 ## Not Enough Candidates Warning
 If you get a warning that looks like this in the "Run" tab at the bottom of the PyCharm IDE, this means there are not enough RAs available for duty on the specified day. A warning like this may appear as the following:
