@@ -44,7 +44,7 @@ NUM_DAYS_MONTH = calendar.monthrange(datetime.today().year, datetime.today().mon
 
 # schedule bounds - useful for partial months of duty scheduling
 SCHEDULE_START_DAY = 1
-MONTH_END_DAY = 14
+MONTH_END_DAY = NUM_DAYS_MONTH
 
 # dictionary to hold names of RA scheduled for each date
 schedule_dict = {}
