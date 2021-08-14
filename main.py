@@ -21,7 +21,14 @@ WEEKENDS = ['Friday', 'Saturday']
 NUM_DAYS_YEAR = 365
 
 # setting number of RAs on duty weekday/weekend
-MONTH_SELECT = 1  # 0 = current, 1 = next
+MONTH_SELECT = input("Would you like to schedule for current month or next month? [c/n]: ")
+if MONTH_SELECT == 'c':
+    MONTH_SELECT_NUM = 0
+elif MONTH_SELECT == 'n':
+    MONTH_SELECT_NUM = 1
+else:
+    print("ERROR: Please enter 'c' for the current month or 'n' for the next month.")
+    sys.exit(1)
 WEEKDAY_STAFF_NUM = int(input("How many RAs would you like scheduled on weekdays (0<=X<=3)? (Sun-Thurs): "))
 WEEKEND_STAFF_NUM = int(input("How many RAs would you like scheduled on weekends (0<=X<=3)? (Fri-Sat): "))
 if not (0 <= WEEKDAY_STAFF_NUM <= 3) or not (0 <= WEEKEND_STAFF_NUM <= 3):
@@ -29,11 +36,11 @@ if not (0 <= WEEKDAY_STAFF_NUM <= 3) or not (0 <= WEEKEND_STAFF_NUM <= 3):
     sys.exit(1)
 
 # month number and string
-MONTH_NUM = datetime.today().month + MONTH_SELECT % 12
+MONTH_NUM = datetime.today().month + MONTH_SELECT_NUM % 12
 MONTH_STRING = calendar.month_name[MONTH_NUM]
 
 # number of days in current month
-NUM_DAYS_MONTH = calendar.monthrange(datetime.today().year, datetime.today().month + MONTH_SELECT % 12)[1]
+NUM_DAYS_MONTH = calendar.monthrange(datetime.today().year, datetime.today().month + MONTH_SELECT_NUM % 12)[1]
 
 # schedule bounds - useful for partial months of duty scheduling
 SCHEDULE_START_DAY = 1
@@ -50,15 +57,15 @@ BUILDING = input("Input the building/community code (NHW, CHRNE_HARP, etc.): ").
 MONTH = input("Input the current month name: ").lower()
 AVAILABILITY_FILE_PATH = "Availability/" + MONTH + "_" + BUILDING + ".xlsx"
 if not os.path.isfile(AVAILABILITY_FILE_PATH):
-    print("Incorrect availability file path. Check that the input file path exists and contains the correct month/building format.")
+    print("Incorrect Availability file path. Check that the input file path exists and contains the correct month/building format.")
     print("Format example: monthName_buildingCode.xlsx")
     sys.exit(1)
 availability_master = pd.DataFrame(pd.read_excel(AVAILABILITY_FILE_PATH))
 
 # read and create Pandas data frame from History XLSX file
-HISTORY_FILE_PATH = "History/" + BUILDING + "_hist_test.xlsx"
+HISTORY_FILE_PATH = "History/" + BUILDING + "_hist.xlsx"
 if not os.path.isfile(HISTORY_FILE_PATH):
-    print("Incorrect file path. Check that the input file path exists and contains the correct month/building format.")
+    print("Incorrect History file path. Check that the input file path exists and contains the correct building format.")
     print("Format example: buildingCode_hist.xlsx")
     sys.exit(1)
 history_master = pd.DataFrame(pd.read_excel(HISTORY_FILE_PATH))
@@ -72,7 +79,7 @@ RA_CUM_WEEKENDS = history_master["Weekends Total"].tolist()
 RA_BUSY_DAYS = availability_master["Days"].tolist()
 
 # number of days in current month
-NUM_DAYS_MONTH = calendar.monthrange(datetime.today().year, datetime.today().month + MONTH_SELECT % 12)[1]
+NUM_DAYS_MONTH = calendar.monthrange(datetime.today().year, datetime.today().month + MONTH_SELECT_NUM % 12)[1]
 
 # create RA object from ResidentAdviser class for each RA in Availability XLSX file
 RA_DETAILS = {}
@@ -98,7 +105,7 @@ for i in range(len(RA_NAMES)):
     RA_DETAILS[RA_NAMES[i]] = ResidentAdviser(RA_NAMES[i], availability_excel, RA_CUM_WEEKDAYS[i], RA_CUM_WEEKENDS[i])
 
 # determine candidates for scheduling on each day of the current month + schedule accordingly based on availability
-for DAY_NUM in range(SCHEDULE_START_DAY - 1, NUM_DAYS_MONTH):
+for DAY_NUM in range(SCHEDULE_START_DAY - 1, MONTH_END_DAY):
     count_threshold = NUM_DAYS_YEAR
     candidates = []
     candidate_selected = None
@@ -315,7 +322,7 @@ print("-------------------------------------------")
 
 # create calendar with names of RAs on duty labeled on respective date
 calendar_create = MplCalendar(YEAR, MONTH_NUM)
-for DAY_NUM in range(SCHEDULE_START_DAY - 1, NUM_DAYS_MONTH):
+for DAY_NUM in range(SCHEDULE_START_DAY - 1, MONTH_END_DAY):
     if calendar.day_name[datetime(YEAR, MONTH_NUM, DAY_NUM + 1).weekday()] in WEEKDAYS:
         for i in range(WEEKDAY_STAFF_NUM):
             calendar_create.add_event(DAY_NUM + 1, schedule_dict[DAY_NUM + 1][i])
