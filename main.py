@@ -20,7 +20,7 @@ WEEKDAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday']
 WEEKENDS = ['Friday', 'Saturday']
 NUM_DAYS_YEAR = 365
 
-# setting number of RAs on duty weekday/weekend
+# determine if scheduling for the current month or the next month
 MONTH_SELECT = input("Would you like to schedule for current month or next month? [c/n]: ")
 if MONTH_SELECT == 'c':
     MONTH_SELECT_NUM = 0
@@ -29,6 +29,8 @@ elif MONTH_SELECT == 'n':
 else:
     print("ERROR: Please enter 'c' for the current month or 'n' for the next month.")
     sys.exit(1)
+
+# setting number of RAs on duty weekday/weekend
 WEEKDAY_STAFF_NUM = int(input("How many RAs would you like scheduled on weekdays (0<=X<=3)? (Sun-Thurs): "))
 WEEKEND_STAFF_NUM = int(input("How many RAs would you like scheduled on weekends (0<=X<=3)? (Fri-Sat): "))
 if not (0 <= WEEKDAY_STAFF_NUM <= 3) or not (0 <= WEEKEND_STAFF_NUM <= 3):
