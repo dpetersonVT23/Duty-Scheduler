@@ -56,12 +56,7 @@ for i in range(NUM_DAYS_MONTH):
 
 # read and create Pandas data frame from Availability XLSX file
 BUILDING = input("Input the building/community code (NHW, CHRNE_HARP, etc.): ").upper()
-if MONTH_SELECT == 'c':
-    MONTH = input("Input the current month's name: ").lower()
-elif MONTH_SELECT == 'n':
-    MONTH = input("Input the next month's name: ").lower()
-
-AVAILABILITY_FILE_PATH = "Availability/" + MONTH + "_" + BUILDING + ".xlsx"
+AVAILABILITY_FILE_PATH = "Availability/" + MONTH_STRING + "_" + BUILDING + ".xlsx"
 if not os.path.isfile(AVAILABILITY_FILE_PATH):
     print("Incorrect Availability file path. Check that the input file path exists and contains the correct month/building format.")
     print("Format example: monthName_buildingCode.xlsx")
@@ -99,9 +94,9 @@ for i in range(len(RA_NAMES)):
     if isinstance(days_strings, str):
         days_strings_split = days_strings.split("/")
 
-    for j in range(len(days_strings_split)):
-        if j % 2:
-            days_ints_strings.append(days_strings_split[j])
+        for j in range(len(days_strings_split)):
+            if j % 2:
+                days_ints_strings.append(days_strings_split[j])
 
     for k in range(len(days_ints_strings)):
         days_ints.append(int(days_ints_strings[k]))
