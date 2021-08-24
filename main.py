@@ -21,7 +21,7 @@ WEEKENDS = ['Friday', 'Saturday']
 NUM_DAYS_YEAR = 365
 
 # determine if scheduling for the current month or the next month
-MONTH_SELECT = input("Would you like to schedule for current month or next month? [c/n]: ")
+MONTH_SELECT = input("Would you like to schedule for the current month or the next month? [c/n]: ")
 if MONTH_SELECT == 'c':
     MONTH_SELECT_NUM = 0
 elif MONTH_SELECT == 'n':
