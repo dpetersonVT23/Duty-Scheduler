@@ -15,10 +15,10 @@ from RA import ResidentAdviser
 from mplcal import MplCalendar
 
 # constants
-YEAR = datetime.today().year
-WEEKDAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday']
-WEEKENDS = ['Friday', 'Saturday']
-NUM_DAYS_YEAR = 365
+YEAR = datetime.today().year                                            # current year
+WEEKDAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday']     # list of weekdays
+WEEKENDS = ['Friday', 'Saturday']                                       # list of weekends
+NUM_DAYS_YEAR = 365                                                     # number of days in a year
 
 # determine if scheduling for the current month or the next month
 MONTH_SELECT = input("Would you like to schedule for the CURRENT (c) month or the NEXT (n) month? [c/n]: ")
@@ -50,7 +50,6 @@ MONTH_END_DAY = NUM_DAYS_MONTH
 
 # dictionary to hold names of RA scheduled for each date
 schedule_dict = {}
-
 for i in range(NUM_DAYS_MONTH):
     schedule_dict[i + 1] = ['RA']
 
@@ -347,7 +346,7 @@ while user_satisfied == 'n':
         print("ERROR: Please enter 'k' to keep the current duty schedule or 'n' to generate a new version.")
         sys.exit(1)
 
-
+# save the calendar image to the corrsponding directory
 calendar_save_path = MONTH_STRING + "_" + str(YEAR) + "_duty_schedule_" + BUILDING
 calendar_create.save("Schedule/" + calendar_save_path)
 
@@ -355,7 +354,7 @@ calendar_create.save("Schedule/" + calendar_save_path)
 print("***Please enter 'n' if this is mid-semester, you should only reset cumulative worked weekdays/weekends to 0 at the beginning or end of a semester.***")
 reset = input("Would you like to reset cumulative worked weekdays/weekends for all RAs? [y/n]: ")
 
-# update history
+# update History XLSX file
 for index, RA in enumerate(RA_DETAILS.values()):
     history_master.loc[index, "Weekdays Total"] = RA.scheduled_weekdays
     history_master.loc[index, "Weekends Total"] = RA.scheduled_weekends
@@ -364,6 +363,6 @@ for index, RA in enumerate(RA_DETAILS.values()):
         history_master.loc[index, "Weekdays Total"] = 0
         history_master.loc[index, "Weekends Total"] = 0
 
-# remove old history file and save new history file for future additions
+# remove old History XLSX file and save new History XLSX file for future additions
 os.remove(HISTORY_FILE_PATH)
 history_master.to_excel(HISTORY_FILE_PATH, index=False)
