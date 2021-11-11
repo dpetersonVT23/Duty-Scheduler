@@ -46,7 +46,7 @@ NUM_DAYS_MONTH = calendar.monthrange(datetime.today().year, datetime.today().mon
 
 # schedule bounds - useful for partial months of duty scheduling
 SCHEDULE_START_DAY = 1
-MONTH_END_DAY = NUM_DAYS_MONTH
+MONTH_END_DAY = 15 #NUM_DAYS_MONTH
 
 # dictionary to hold names of RA scheduled for each date
 schedule_dict = {}
@@ -128,7 +128,7 @@ while user_satisfied == 'n':
                 for keys, RA in RA_DETAILS.items():
                     if RA.scheduled_weekdays <= count_threshold and DAY_NUM + 1 in RA.availability_clean and RA.name not in candidates:
                         if DAY_NUM > 2:
-                            if RA.name not in (schedule_dict[DAY_NUM] and schedule_dict[DAY_NUM - 1] and schedule_dict[DAY_NUM - 2]):
+                            if not (RA.name in schedule_dict[DAY_NUM] or RA.name in schedule_dict[DAY_NUM - 1] or RA.name in schedule_dict[DAY_NUM - 2]):
                                 candidates.append(RA.name)
                         else:
                             candidates.append(RA.name)
@@ -218,8 +218,8 @@ while user_satisfied == 'n':
             while len(candidates) < WEEKEND_STAFF_NUM:
                 for keys, RA in RA_DETAILS.items():
                     if RA.scheduled_weekends <= count_threshold and DAY_NUM + 1 in RA.availability_clean and RA.name not in candidates:
-                        if DAY_NUM:
-                            if RA.name not in schedule_dict[DAY_NUM]:
+                        if DAY_NUM > 2:
+                            if not (RA.name in schedule_dict[DAY_NUM] or RA.name in schedule_dict[DAY_NUM - 1] or RA.name in schedule_dict[DAY_NUM - 2]):
                                 candidates.append(RA.name)
                         else:
                             candidates.append(RA.name)
