@@ -3,13 +3,15 @@ Create an RA Duty Schedule in seconds!
 
 **Author:** David Peterson - dpeterson23@vt.edu
 
-**Version:** V1.3 08-11-2021
+**Version:** V1. 01-04-2022
 
 V1.1 - Partnerships Added - program prioritizes matching you with new RAs
 
 V1.2 - Custom number of staff for weekdays/weekends
 
 V1.3 - History Added - automatically import cumulative number of worked weekdays/weekends
+
+V1.4 - Enhanced user input procedures, automatic refreshing calendar, ensure at least 5 days between scheduled days
 
 If you experience any bugs/errors or would like to suggest an improvement, please contact me by emailing dpeterson23@vt.edu
 
@@ -92,13 +94,6 @@ Now to run the program! Click the Green Play button, fill in the prompts in the 
 
 ## Checking for Updates
 It is smart to check for any updates (improvements) made to the code before you run the program to schedule RA duty for the month. To check for any updates, locate the Diagonal Blue Arrow located in the upper-right corner of the PyCharm IDE. When you hover over this arrow it will say "Update Project...". Click on the arrow icon, select OK, and your program will check for updates (automatically updating as necessary). A small pop-up will appear in the lower-right corner of the screen confirming once the program has finishing updating.
-
-## Partial Month Scheduling
-The program is set to schedule RA duty for the entire month, however, sometimes you may only want to schedule for part of the month...you can do that!
-
-**Modify Start Date:** Open the program in PyCharm and locate LINE 46 in main.py, here you can change the duty scheduling start date. The default value is 1, representing the start of the month, but if you'd like to start scheduling duty on the 14th for example, set this value to 14.
-
-**Modify End Date:** Open the program in PyCharm and locate LINE 47 in main.py, here you can change the duty scheduling end date. The default value is NUM_DAYS_MONTH (representing the number of days in the current month), representing the end of the month. However, if you'd like to end scheduling duty on the 28th for example, set this value to 28 (this will include scheduling duty on the 28th).
 
 ## Not Enough Candidates Warning
 If you get a warning that looks like this in the "Run" tab at the bottom of the PyCharm IDE, this means there are not enough RAs available for duty on the specified day. A warning like this may appear as the following:
