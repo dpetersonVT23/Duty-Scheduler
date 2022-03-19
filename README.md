@@ -1,4 +1,4 @@
-# Automated RA Duty Scheduler
+# Automated RA/RWBSL Duty Scheduler
 Create an RA Duty Schedule in seconds!
 
 **Author:** David Peterson - dpeterson23@vt.edu
