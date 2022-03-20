@@ -66,7 +66,7 @@ This is the last step, you are almost done with this one-time set-up!
 6) Click OK and you're Python environment is all ready to go!
 
 ## Running the Program
-Create a Google form that allows residents to choose which dates they are **not** available. Please see this example form for August (credit Illa Rochez): https://forms.gle/tvbEhKGmkEREgkdB7 - You will see a section to mark days UNAVAILABLE and NOT IDEAL, the program only uses days an RA is UNAVAILABLE to schedule. Use dates for NOT IDEAL to find backup RAs if you don't have enough RAs on a given day.
+Create a Google form that allows residents to choose which dates they are **not** available. Please see this example form for August (credit Illa Rochez): https://forms.gle/52GgyagZQwaKjq4h9 - You will see a section to mark days UNAVAILABLE, the program uses days an RA is UNAVAILABLE to schedule.
 
 Please ensure the options for selecting when an RA is busy is formatted as "DAY: MONTH/DAY/YEAR". (e.g., Sunday: 08/15/2021)
 
