@@ -12,8 +12,8 @@ import os
 
 # module import statements
 from datetime import datetime
-from utils import mplcal
-from utils import staffMember
+import mplcal
+import staffMember
 
 # set global variables
 # constants
@@ -189,18 +189,10 @@ def main():
     calendar_save_path = MONTH_STRING + "_" + str(YEAR) + "_duty_schedule_" + BUILDING
     calendar_create.save("Schedule/" + calendar_save_path)
 
-    # reset cumulative weekdays/weekends
-    print("***Please enter 'n' if this is mid-academic year, you should only reset cumulative worked weekdays/weekends to 0 at the beginning or end of an academic year.***")
-    reset = input("Would you like to reset cumulative worked weekdays/weekends for all RAs? [y/n]: ")
-
     # update History XLSX file
     for index, RA in enumerate(RA_DETAILS.values()):
         history_master.loc[index, "Weekdays Total"] = RA.scheduled_weekdays
         history_master.loc[index, "Weekends Total"] = RA.scheduled_weekends
-
-        if reset == 'y':
-            history_master.loc[index, "Weekdays Total"] = 0
-            history_master.loc[index, "Weekends Total"] = 0
 
     # remove old History XLSX file and save new History XLSX file for future additions
     os.remove(HISTORY_FILE_PATH)
