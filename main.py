@@ -1,4 +1,4 @@
-# RA Duty Scheduler
+# Duty Scheduler
 # Copyright (c) 2021, David Peterson
 #
 # All rights reserved.
@@ -12,8 +12,8 @@ import os
 
 # module import statements
 from datetime import datetime
-from utils.RA import ResidentAdviser
-from utils.mplcal import MplCalendar
+from utils import mplcal
+from utils import staffMember
 
 # set global variables
 # constants
@@ -128,7 +128,7 @@ def main():
                 if day not in days_ints:
                     availability_excel.append(day)
 
-            RA_DETAILS[RA_NAMES[i]] = ResidentAdviser(RA_NAMES[i], availability_excel, RA_CUM_WEEKDAYS[i], RA_CUM_WEEKENDS[i])
+            RA_DETAILS[RA_NAMES[i]] = staffMember.StaffMember(RA_NAMES[i], availability_excel, RA_CUM_WEEKDAYS[i], RA_CUM_WEEKENDS[i])
 
         # determine candidates for scheduling on each day of the current month + schedule accordingly based on availability
         for DAY_NUM in range(SCHEDULE_START_DAY - 1, MONTH_END_DAY):
@@ -164,7 +164,7 @@ def main():
         print("-------------------------------------------")
 
         # create calendar with names of RAs on duty labeled on respective date
-        calendar_create = MplCalendar(YEAR, MONTH_NUM)
+        calendar_create = mplcal.MplCalendar(YEAR, MONTH_NUM)
         for DAY_NUM in range(SCHEDULE_START_DAY - 1, MONTH_END_DAY):
             if calendar.day_name[datetime(YEAR, MONTH_NUM, DAY_NUM + 1).weekday()] in WEEKDAYS:
                 for i in range(WEEKDAY_STAFF_NUM):
