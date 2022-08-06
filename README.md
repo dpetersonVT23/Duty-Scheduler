@@ -34,7 +34,7 @@ You only have to do these steps for a first-time set-up.
 4) Open Command Prompt (hit Windows Start Button and search for Command Prompt)
 5) On the Command Prompt, execute the command: git clone <link copied in step 3>
 6) On the Command Prompt, execute the command: pwd
-- This is where the duty scheduler will be saved, it is typically /c/Users/<your username>, remember this for future steps.
+- This is where the duty scheduler will be saved, it is typically /c/Users/\<your username\>, remember this for future steps.
 
 **Installing Packages**  
 This program needs support from external libraries to function correctly. On the Command Prompt, execute the following commands:
