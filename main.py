@@ -12,8 +12,8 @@ import os
 
 # module import statements
 from datetime import datetime
-from RA import ResidentAdviser
-from mplcal import MplCalendar
+from utils.RA import ResidentAdviser
+from utils.mplcal import MplCalendar
 
 # set global variables
 # constants
