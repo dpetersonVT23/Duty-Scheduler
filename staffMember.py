@@ -1,5 +1,5 @@
 # Duty Scheduler
-# Copyright (c) 2021, David Peterson
+# Copyright (c) 2022, David Peterson
 #
 # All rights reserved.
 

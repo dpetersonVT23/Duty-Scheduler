@@ -5,7 +5,7 @@ Create a Duty Schedule in seconds!
 
 **Version:** V1.4 01-04-2022
 
-V1.1 - Partnerships Added - program prioritizes matching you with new RAs
+V1.1 - Partnerships Added - program prioritizes matching you with new staff members
 
 V1.2 - Custom number of staff for weekdays/weekends
 
@@ -66,18 +66,15 @@ Save the availability Excel file here. Now it is time to set up the History Exce
 ## Running the Program
 Now to run the program! Open the command prompt and run the command "cd Duty-Scheduler", then run the command "python main.py", fill in the prompts in the terminal accordingly, and your Calendar will pop-up and automatically be saved to the Schedule folder for you to access and share with your staff! In addition, your History Excel file will be updated with a running sum of worked weekdays/weekends automatically and will use these values to appropiately assign a balanced duty schedule over the course of the semester/year.
 
-**IMPORTANT NOTE:** Once the calendar pops up, hit the X in the upper corner and close the window so that the program continues and saves your History Excel file. Do not worry as your calendar will automatically be saved in the Schedule directory.
+**IMPORTANT NOTE:** The program will automatically save the calendar and update the History Excel file.
 
-**Run Output:** In the "Run" tab, at the bottom of the PyCharm IDE, you will see a series of outputs after you run the program providing you additional information about your newly generated RA Duty Calendar. From top to bottom, you will find a list of the RAs on duty each day (RAs Scheduled Dates), the cumulative number of weekdays/weekends each RA has been scheduled at that point in the semester (RA Weekday/Weekend Counts), the number of unique RAs each RA is partnered up with on duty (along with who specifically these unique RAs are) (RA Partnerships), and the number of days the RA submitted that they were available for a given month (RA Availability)!
+**Run Output:** You will see a series of outputs after you run the program providing you additional information about your newly generated Duty Calendar. From top to bottom, you will find a list of the staff members on duty each day (Staff Member Scheduled Dates), the cumulative number of weekdays/weekends each staff member has been scheduled at that point in the semester (Staff Member Weekday/Weekend Counts), the number of unique staff members each staff member is partnered up with on duty (along with who specifically these unique staff members are) (Staff Member Partnerships), and the number of days the staff member submitted that they were available for a given month (Staff Member Availability)!
 
 # Advanced Tips
 
-## Checking for Updates
-It is smart to check for any updates (improvements) made to the code before you run the program to schedule RA duty for the month. To check for any updates, locate the Diagonal Blue Arrow located in the upper-right corner of the PyCharm IDE. When you hover over this arrow it will say "Update Project...". Click on the arrow icon, select OK, and your program will check for updates (automatically updating as necessary). A small pop-up will appear in the lower-right corner of the screen confirming once the program has finishing updating.
-
 ## Not Enough Candidates Warning
-If you get a warning that looks like this in the "Run" tab at the bottom of the PyCharm IDE, this means there are not enough RAs available for duty on the specified day. A warning like this may appear as the following:
+If you get a warning that looks like this in the "Run" tab at the bottom of the PyCharm IDE, this means there are not enough staff members available for duty on the specified day. A warning like this may appear as the following:
 
 NOT ENOUGH CANDIDATES FOR JULY 22 (WEEKDAY) - Currently have 1 candidate(s) | Candidates: [nameOfCurrentCandidates]
 
-This means that on July 22nd, only 1 of your RAs has noted that they are available for duty but you might need atleast 2 to be available. Reach out and find someone else who is willing to fill in and be the second RA on duty for that day!
+This means that on July 22nd, only 1 of your staff members has noted that they are available for duty but you might need atleast 2 to be available. Reach out and find someone else who is willing to fill in and be the second staff member on duty for that day!
