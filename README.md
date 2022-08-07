@@ -21,9 +21,9 @@ If you experience any bugs/errors or would like to suggest an improvement, pleas
 ## Set-Up
 You only have to do these steps for a first-time set-up.
 
-If you have downloaded a zip file of this program, extract the zip file in C:/Users/[your username] and perform Step 1 (skip Steps 2-6).
+If you have downloaded a zip file of this program, extract the zip file in C:/Users/[your username] and perform Step 1 in Install Python and Program (skip Steps 2-6). Then, continue to perform the Installing Packages commands.
 
-**Install Python**
+**Install Python and Program**
 1) If you do not have a version of Python installed on your computer, download it here: https://www.python.org/downloads/
 2) Once Python is downloaded, go here: https://github.com/dpetersonVT23/Duty-Scheduler
 3) Click on the green "Code" button, it will drop down with an "HTTPS" link, click the clipboard to copy this link (it will confirm you copied it)
