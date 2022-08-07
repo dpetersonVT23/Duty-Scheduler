@@ -62,7 +62,7 @@ Save the Availability Excel file here. Now it is time to set up the History Exce
 ![](images/excel_history_rwbsl.png)
 
 ## Running the Program
-Now to run the program! Open the command prompt and run the command "cd Duty-Scheduler", then run the command "python main.py", fill in the prompts in the terminal accordingly, and your Calendar will pop-up and automatically be saved to the Schedule folder for you to access and share with your staff! In addition, your History Excel file will be updated with a running sum of worked weekdays/weekends automatically and will use these values to appropiately assign a balanced duty schedule over the course of the semester/year.
+Now to run the program! Open the command prompt and run the command "cd Duty-Scheduler", then run the command "python main.py", fill in the prompts in the terminal accordingly, and your Calendar will pop-up and automatically be saved to the Schedule folder for you to access and share with your staff! In addition, your History Excel file will be updated with a running sum of worked weekdays/weekends/sitters automatically and will use these values to appropiately assign a balanced duty schedule over the course of the semester/year.
 
 **IMPORTANT NOTE:** The program will automatically save the calendar and update the History Excel file.
 
@@ -71,7 +71,7 @@ Now to run the program! Open the command prompt and run the command "cd Duty-Sch
 # Advanced Tips
 
 ## Not Enough Candidates Warning
-If you get a warning that looks like this in the "Run" tab at the bottom of the PyCharm IDE, this means there are not enough staff members available for duty on the specified day. A warning like this may appear as the following:
+If you get a warning that is similar to the one shown below, this means there are not enough staff members available for duty on the specified day.
 
 NOT ENOUGH CANDIDATES FOR JULY 22 (WEEKDAY) - Currently have 1 candidate(s) | Candidates: [nameOfCurrentCandidates]
 
