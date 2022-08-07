@@ -15,7 +15,7 @@ If you experience any bugs/errors or would like to suggest an improvement, pleas
 3) Save the Availability Excel file in the correct location and run the program once a month
 4) View your automatically created duty schedule in a calendar like this!
 
-![](images/calendar.png)
+![](images/calendar_rwbsl.png)
 
 
 ## Set-Up
