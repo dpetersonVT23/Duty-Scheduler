@@ -63,6 +63,8 @@ Save the Availability Excel file here. Now it is time to set up the History Exce
 
 ENSURE THE NAMES FROM THE AVAILABILITY EXCEL FILE MATCH THE NAMES FROM THE HISTORY EXCEL FILE!!!
 
+![](images/excel_2.png)
+
 ## Running the Program
 Now to run the program! Open the command prompt and run the command "cd Duty-Scheduler", then run the command "python main.py", fill in the prompts in the terminal accordingly, and your Calendar will pop-up and automatically be saved to the Schedule folder for you to access and share with your staff! In addition, your History Excel file will be updated with a running sum of worked weekdays/weekends automatically and will use these values to appropiately assign a balanced duty schedule over the course of the semester/year.
 
