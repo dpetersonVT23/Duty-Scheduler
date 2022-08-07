@@ -1,17 +1,11 @@
-# Automated Duty Scheduler
+# Automated Duty Scheduler - RWBSL
 Create a Duty Schedule in seconds!
 
 **Author:** David Peterson - dpeterson23@vt.edu
 
-**Version:** V1.4 01-04-2022
+**Version:** V1.1 08-07-2022
 
-V1.1 - Partnerships Added - program prioritizes matching you with new staff members
-
-V1.2 - Custom number of staff for weekdays/weekends
-
-V1.3 - History Added - automatically import cumulative number of worked weekdays/weekends
-
-V1.4 - Enhanced user input procedures, automatic refreshing calendar, ensure at least 5 days between scheduled days
+V1.1 - RWBSL refactor
 
 If you experience any bugs/errors or would like to suggest an improvement, please contact me by emailing dpeterson23@vt.edu
 

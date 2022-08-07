@@ -7,7 +7,6 @@
 import calendar
 import pandas as pd
 import sys
-import random
 import os
 
 # module import statements
@@ -32,12 +31,8 @@ else:
     print("ERROR: Please enter 'c' for the CURRENT month or 'n' for the NEXT month.")
     sys.exit(1)
 
-# set number of staff members on duty weekday/weekend
-WEEKDAY_STAFF_NUM = int(input("How many staff members would you like scheduled on weekdays (Sun-Thurs)? (between 0 and 3): "))
-WEEKEND_STAFF_NUM = int(input("How many staff members would you like scheduled on weekends (Fri-Sat)? (between 0 and 3): "))
-if not (0 <= WEEKDAY_STAFF_NUM <= 3) or not (0 <= WEEKEND_STAFF_NUM <= 3):
-    print("ERROR: Program only schedules between 0 and 3 staff members for weekdays/weekends.")
-    sys.exit(1)
+# set number of staff members on duty and number of sitters weekday/weekend
+STAFF_NUM = 3
 
 # month number and string
 MONTH_NUM = (datetime.today().month + MONTH_SELECT_NUM) % 12
@@ -91,99 +86,89 @@ if not os.path.isfile(HISTORY_FILE_PATH):
     sys.exit(1)
 history_master = pd.DataFrame(pd.read_excel(HISTORY_FILE_PATH))
 
-# list of staff member names from Availability XLSX file, cumulative weekdays, cumulative weekends, cumulative partnerships
+# list of staff member names from Availability XLSX file, cumulative weekdays, cumulative weekends
 SM_NAMES = availability_master["First Name"].tolist()
 SM_CUM_WEEKDAYS = history_master["Weekdays Total"].tolist()
 SM_CUM_WEEKENDS = history_master["Weekends Total"].tolist()
+SM_CUM_SITTER = history_master["Sitter Total"].tolist()
 
 # list of days the staff members are busy
 SM_BUSY_DAYS = availability_master["Days"].tolist()
 
 
 def main():
-    # while the user is not satisfied with the duty schedule, create new versions
-    user_satisfied = 'n'
+    # create staff member object from ResidentAdviser class for each staff member in Availability XLSX file
+    SM_DETAILS = {}
+    for i in range(len(SM_NAMES)):
+        days_ints = []
+        days_ints_strings = []
+        availability_excel = []
+        days_strings = SM_BUSY_DAYS[i]
 
-    while user_satisfied == 'n':
-        # create staff member object from ResidentAdviser class for each staff member in Availability XLSX file
-        SM_DETAILS = {}
-        for i in range(len(SM_NAMES)):
-            days_ints = []
-            days_ints_strings = []
-            availability_excel = []
-            days_strings = SM_BUSY_DAYS[i]
+        # parse Google form output for staff member availability
+        if isinstance(days_strings, str):
+            days_strings_split = days_strings.split("/")
 
-            # parse Google form output for staff member availability
-            if isinstance(days_strings, str):
-                days_strings_split = days_strings.split("/")
+            for j in range(len(days_strings_split)):
+                if j % 2:
+                    days_ints_strings.append(days_strings_split[j])
 
-                for j in range(len(days_strings_split)):
-                    if j % 2:
-                        days_ints_strings.append(days_strings_split[j])
+        for k in range(len(days_ints_strings)):
+            days_ints.append(int(days_ints_strings[k]))
 
-            for k in range(len(days_ints_strings)):
-                days_ints.append(int(days_ints_strings[k]))
+        for day in range(1, NUM_DAYS_MONTH + 1):
+            if day not in days_ints:
+                availability_excel.append(day)
 
-            for day in range(1, NUM_DAYS_MONTH + 1):
-                if day not in days_ints:
-                    availability_excel.append(day)
+        SM_DETAILS[SM_NAMES[i]] = staffMember.StaffMember(SM_NAMES[i], availability_excel, SM_CUM_WEEKDAYS[i], SM_CUM_WEEKENDS[i], SM_CUM_SITTER[1])
 
-            SM_DETAILS[SM_NAMES[i]] = staffMember.StaffMember(SM_NAMES[i], availability_excel, SM_CUM_WEEKDAYS[i], SM_CUM_WEEKENDS[i])
+    # determine candidates for scheduling on each day of the current month + schedule accordingly based on availability
+    for DAY_NUM in range(SCHEDULE_START_DAY - 1, MONTH_END_DAY):
+        # candidate selection
+        if calendar.day_name[datetime(YEAR, MONTH_NUM, DAY_NUM + 1).weekday()] in WEEKDAYS:
+            schedule_current_day(SM_DETAILS, DAY_NUM, True)
+        elif calendar.day_name[datetime(YEAR, MONTH_NUM, DAY_NUM + 1).weekday()] in WEEKENDS:
+            schedule_current_day(SM_DETAILS, DAY_NUM, False)
 
-        # determine candidates for scheduling on each day of the current month + schedule accordingly based on availability
-        for DAY_NUM in range(SCHEDULE_START_DAY - 1, MONTH_END_DAY):
-            # candidate selection
-            if calendar.day_name[datetime(YEAR, MONTH_NUM, DAY_NUM + 1).weekday()] in WEEKDAYS:
-                schedule_current_day(SM_DETAILS, DAY_NUM, True)
-            elif calendar.day_name[datetime(YEAR, MONTH_NUM, DAY_NUM + 1).weekday()] in WEEKENDS:
-                schedule_current_day(SM_DETAILS, DAY_NUM, False)
+    # display schedule summary information
+    # confirm correct names scheduled for correct dates
+    print("Staff Member Scheduled Dates")
+    for keys, SM in schedule_dict.items():
+        print(keys, SM)
+    print("-------------------------------------------")
 
-        # display schedule summary information
-        # confirm correct names scheduled for correct dates
-        print("Staff Member Scheduled Dates")
-        for keys, SM in schedule_dict.items():
-            print(keys, SM)
-        print("-------------------------------------------")
+    # confirm even distribution of worked day amounts/types
+    print("Staff Member Weekday/Weekend Counts")
+    for keys, SM in SM_DETAILS.items():
+        print(SM.name + " | Weekdays: " + str(SM.scheduled_weekdays) + " | Weekends: " + str(SM.scheduled_weekends) + " | Sitter: " + str(SM.scheduled_sitter))
+    print("-------------------------------------------")
 
-        # confirm even distribution of worked day amounts/types
-        print("Staff Member Weekday/Weekend Counts")
-        for keys, SM in SM_DETAILS.items():
-            print(SM.name + " | Weekdays: " + str(SM.scheduled_weekdays) + " | Weekends: " + str(SM.scheduled_weekends))
-        print("-------------------------------------------")
+    # view staff member availability count for each staff member for the given month
+    print("Staff Member Availability")
+    for keys, SM in SM_DETAILS.items():
+        print(SM.name + " | Availability: " + str(len(SM.availability_clean)) + "/" + str(NUM_DAYS_MONTH) + " days")
+    print("-------------------------------------------")
 
-        # view partnerships for each staff member for the given month
-        print("Staff Member Partnerships")
-        for keys, SM in SM_DETAILS.items():
-            print(SM.name + " | Partnerships: " + str(SM.partnerships) + " | " + str(len(SM.partnerships)) + "/" + str(len(SM_NAMES) - 1) + " staff members")
-        print("-------------------------------------------")
+    # create calendar with names of staff members on duty labeled on respective date
+    calendar_create = mplcal.MplCalendar(YEAR, MONTH_NUM)
+    for DAY_NUM in range(SCHEDULE_START_DAY - 1, MONTH_END_DAY):
+        for i in range(STAFF_NUM):
+            calendar_create.add_event(DAY_NUM + 1, schedule_dict[DAY_NUM + 1][i])
 
-        # view staff member availability count for each staff member for the given month
-        print("Staff Member Availability")
-        for keys, SM in SM_DETAILS.items():
-            print(SM.name + " | Availability: " + str(len(SM.availability_clean)) + "/" + str(NUM_DAYS_MONTH) + " days")
-        print("-------------------------------------------")
+    # duty schedule review instructions
+    print("Once you are done reviewing the duty schedule, please exit out of the calendar pop-up window.")
+    input("Press ENTER to view the duty schedule.")
+    calendar_create.show()
 
-        # create calendar with names of staff members on duty labeled on respective date
-        calendar_create = mplcal.MplCalendar(YEAR, MONTH_NUM)
-        for DAY_NUM in range(SCHEDULE_START_DAY - 1, MONTH_END_DAY):
-            if calendar.day_name[datetime(YEAR, MONTH_NUM, DAY_NUM + 1).weekday()] in WEEKDAYS:
-                for i in range(WEEKDAY_STAFF_NUM):
-                    calendar_create.add_event(DAY_NUM + 1, schedule_dict[DAY_NUM + 1][i])
-            elif calendar.day_name[datetime(YEAR, MONTH_NUM, DAY_NUM + 1).weekday()] in WEEKENDS:
-                for i in range(WEEKEND_STAFF_NUM):
-                    calendar_create.add_event(DAY_NUM + 1, schedule_dict[DAY_NUM + 1][i])
+    # determine if scheduling for the current month or the next month
+    user_satisfied = input("Would you like to SAVE (s) the current calendar or EXIT (e) the program [s/e]: ")
+    if user_satisfied != 's' and user_satisfied != 'e':
+        print("ERROR: Please enter 's' to save the current duty schedule or 'e' to exit the program.")
+        sys.exit(1)
 
-        # duty schedule review instructions
-        print("Once you are done reviewing the duty schedule, please exit out of the calendar pop-up window.")
-        print("After closing the calendar pop-up window, you will be prompted to keep the current duty schedule or generate a new version.")
-        input("Press ENTER to view the duty schedule.")
-        calendar_create.show()
-
-        # determine if scheduling for the current month or the next month
-        user_satisfied = input("Would you like to KEEP (k) the current calendar or generate a NEW (n) version? [k/n]: ")
-        if user_satisfied != 'k' and user_satisfied != 'n':
-            print("ERROR: Please enter 'k' to keep the current duty schedule or 'n' to generate a new version.")
-            sys.exit(1)
+    if user_satisfied == 'e':
+        print("Exiting the program...")
+        sys.exit(1)
 
     print("Saving calendar and updating History Excel file...")
 
@@ -195,6 +180,7 @@ def main():
     for index, SM in enumerate(SM_DETAILS.values()):
         history_master.loc[index, "Weekdays Total"] = SM.scheduled_weekdays
         history_master.loc[index, "Weekends Total"] = SM.scheduled_weekends
+        history_master.loc[index, "Sitter Total"] = SM.scheduled_sitter
 
     # remove old History XLSX file and save new History XLSX file for future additions
     os.remove(HISTORY_FILE_PATH)
@@ -204,12 +190,6 @@ def main():
 def schedule_current_day(SM_DETAILS, DAY_NUM, weekday):
     count_threshold = NUM_DAYS_YEAR
     candidates = []
-    candidate_guaranteed = None
-
-    if weekday:
-        CURRENT_DAY_STAFF_NUM = WEEKDAY_STAFF_NUM
-    else:
-        CURRENT_DAY_STAFF_NUM = WEEKEND_STAFF_NUM
 
     for keys, SM in SM_DETAILS.items():
         if weekday:
@@ -220,7 +200,7 @@ def schedule_current_day(SM_DETAILS, DAY_NUM, weekday):
         if CURRENT_DAY_TYPE_SCHEDULED_COUNT < count_threshold:
             count_threshold = CURRENT_DAY_TYPE_SCHEDULED_COUNT
 
-    while len(candidates) < CURRENT_DAY_STAFF_NUM:
+    while len(candidates) < STAFF_NUM:
         for keys, SM in SM_DETAILS.items():
             if weekday:
                 CURRENT_DAY_TYPE_SCHEDULED_COUNT = SM.scheduled_weekdays
@@ -228,99 +208,64 @@ def schedule_current_day(SM_DETAILS, DAY_NUM, weekday):
                 CURRENT_DAY_TYPE_SCHEDULED_COUNT = SM.scheduled_weekends
 
             if CURRENT_DAY_TYPE_SCHEDULED_COUNT <= count_threshold and DAY_NUM + 1 in SM.availability_clean and SM.name not in candidates:
-                if DAY_NUM > 2:
-                    if not (SM.name in schedule_dict[DAY_NUM] or SM.name in schedule_dict[DAY_NUM - 1] or SM.name in schedule_dict[DAY_NUM - 2]):
+                if DAY_NUM:
+                    if not (SM.name in schedule_dict[DAY_NUM]):
                         candidates.append(SM.name)
                 else:
                     candidates.append(SM.name)
-        if len(candidates) == 1 and not candidate_guaranteed:
-            candidate_guaranteed = candidates[0]
+
         count_threshold += 1
 
         if count_threshold == NUM_DAYS_YEAR:
+            for key, SM in SM_DETAILS.items():
+                print(key, SM.availability_clean)
             print("NOT ENOUGH CANDIDATES FOR " + MONTH_STRING + " " + str(DAY_NUM + 1) + " - Currently have " + str(len(candidates)) + " candidate(s) | Candidate(s): " + str(candidates))
             sys.exit(1)
 
-    # update partnerships
-    if len(candidates) == CURRENT_DAY_STAFF_NUM:
-        if CURRENT_DAY_STAFF_NUM > 1:
-            for i in range(len(candidates)):
-                if not i and candidates[i] not in SM_DETAILS[candidates[0]].partnerships:
-                    SM_DETAILS[candidates[0]].partnerships.append(candidates[i])
-                    SM_DETAILS[candidates[i]].partnerships.append(candidates[0])
+    # update day type counts
+    for candidate in candidates[0:STAFF_NUM]:
+        if weekday:
+            SM_DETAILS[candidate].scheduled_weekdays += 1
         else:
-            pass  # no partnerships updated if alone
+            SM_DETAILS[candidate].scheduled_weekends += 1
 
-        # update day type counts
-        for i in range(len(candidates)):
-            if weekday:
-                SM_DETAILS[candidates[i]].scheduled_weekdays += 1
-            else:
-                SM_DETAILS[candidates[i]].scheduled_weekends += 1
+    # determine sitter index
+    sitterIndex = getSitterIndex(SM_DETAILS, candidates[0:STAFF_NUM], DAY_NUM)
+    SM_DETAILS[candidates[sitterIndex]].scheduled_sitter += 1
 
-        # append staff member names to the schedule management dictionary
-        candidates_selected = []
-        for i in range(len(candidates)):
-            candidates_selected.append(candidates[i])
-
-        schedule_dict[DAY_NUM + 1] = candidates_selected
-
-    # scheduling process
-    elif len(candidates) > CURRENT_DAY_STAFF_NUM:
-        candidate_selection = random.sample(range(0, len(candidates)), len(candidates))
-        if not candidate_guaranteed:
-            candidates_selected = [candidates[candidate_selection[0]]]
-            for index in range(1, len(candidate_selection)):
-                if len(candidates_selected) != CURRENT_DAY_STAFF_NUM:
-                    if candidates[candidate_selection[index]] not in SM_DETAILS[candidates[candidate_selection[0]]].partnerships:
-                        SM_DETAILS[candidates[candidate_selection[0]]].partnerships.append(candidates[candidate_selection[index]])
-                        SM_DETAILS[candidates[candidate_selection[index]]].partnerships.append(candidates[candidate_selection[0]])
-                        candidates_selected.append(candidates[candidate_selection[index]])
-                        break
-            if len(candidates_selected) != CURRENT_DAY_STAFF_NUM:
-                for index in range(1, len(candidate_selection)):
-                    if candidates[candidate_selection[index]] not in candidates_selected and len(candidates_selected) != WEEKEND_STAFF_NUM:
-                        candidates_selected.append(candidates[candidate_selection[index]])
-                        break
-
-            # update weekend counts
-            for i in range(len(candidates_selected)):
-                if weekday:
-                    SM_DETAILS[candidates[candidate_selection[i]]].scheduled_weekdays += 1
-                else:
-                    SM_DETAILS[candidates[candidate_selection[i]]].scheduled_weekends += 1
-
-            # append staff member names to the schedule management dictionary
-            schedule_dict[DAY_NUM + 1] = candidates_selected
+    # append staff member names to the schedule management dictionary
+    candidates_selected = []
+    for idx, candidate in enumerate(candidates[0:STAFF_NUM]):
+        if idx == sitterIndex:
+            candidates_selected.append(candidate + " [S]")
         else:
-            candidates_selected = []
-            for index in range(0, len(candidate_selection)):
-                if len(candidates_selected) != CURRENT_DAY_STAFF_NUM - 1:
-                    if candidates[candidate_selection[index]] not in SM_DETAILS[candidate_guaranteed].partnerships \
-                            and not candidate_guaranteed == candidates[candidate_selection[index]]:
-                        SM_DETAILS[candidate_guaranteed].partnerships.append(candidates[candidate_selection[index]])
-                        SM_DETAILS[candidates[candidate_selection[index]]].partnerships.append(candidate_guaranteed)
-                        candidates_selected.append(candidates[candidate_selection[index]])
-                        break
-            if len(candidates_selected) != CURRENT_DAY_STAFF_NUM - 1:
-                for index in range(0, len(candidate_selection)):
-                    if candidates[candidate_selection[index]] not in candidates_selected and len(candidates_selected) != CURRENT_DAY_STAFF_NUM - 1 \
-                            and not candidate_guaranteed == candidates[candidate_selection[index]]:
-                        candidates_selected.append(candidates[candidate_selection[index]])
-                        break
+            candidates_selected.append(candidate)
 
-            # update day type counts
-            for i in range(len(candidates_selected)):
-                if weekday:
-                    SM_DETAILS[candidate_guaranteed].scheduled_weekdays += 1
-                    SM_DETAILS[candidates[candidate_selection[i]]].scheduled_weekdays += 1
+    schedule_dict[DAY_NUM + 1] = candidates_selected
+
+
+def getSitterIndex(SM_DETAILS, candidates, DAY_NUM):
+    count_threshold = NUM_DAYS_YEAR
+    sitterIndex = None
+
+    for candidate in candidates:
+        CURRENT_SITTER_COUNT = SM_DETAILS[candidate].scheduled_sitter
+
+        if CURRENT_SITTER_COUNT < count_threshold:
+            count_threshold = CURRENT_SITTER_COUNT
+
+    while sitterIndex is None:
+        for idx, candidate in enumerate(candidates):
+            CURRENT_SITTER_COUNT = SM_DETAILS[candidate].scheduled_sitter
+
+            if CURRENT_SITTER_COUNT <= count_threshold and DAY_NUM + 1 in SM_DETAILS[candidate].availability_clean:
+                if DAY_NUM > 2:
+                    if not (SM_DETAILS[candidate].name in schedule_dict[DAY_NUM]):
+                        return idx
                 else:
-                    SM_DETAILS[candidate_guaranteed].scheduled_weekends += 1
-                    SM_DETAILS[candidates[candidate_selection[i]]].scheduled_weekends += 1
+                    return idx
 
-            # append staff member names to the schedule management dictionary
-            candidates_selected.append(candidate_guaranteed)
-            schedule_dict[DAY_NUM + 1] = candidates_selected
+        count_threshold += 1
 
 
 if __name__ == '__main__':
