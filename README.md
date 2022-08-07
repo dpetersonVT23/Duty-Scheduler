@@ -37,8 +37,9 @@ This program needs support from external libraries to function correctly. On the
 
 - pip install pandas
 - pip install matplotlib
-- pip install openpyxl
+- pip install openpyxl  
 
+Help: If "python" or "pip" doesn't work, try "python3" or "pip3" instead.
 
 ## Preparing to Run the Program
 Create a Google form that allows residents to choose which dates they are **not** available. Please see this example form for August (credit Illa Rochez): https://forms.gle/52GgyagZQwaKjq4h9 - You will see a section to mark days UNAVAILABLE, the program uses days an individual is UNAVAILABLE to schedule.
