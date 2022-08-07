@@ -1,4 +1,4 @@
-# Duty Scheduler
+# RWBSL Duty Scheduler
 # Copyright (c) 2022, David Peterson
 #
 # All rights reserved.
@@ -17,8 +17,8 @@ import staffMember
 # set global variables
 # constants
 YEAR = datetime.today().year  # current year
-WEEKDAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday']  # list of weekdays
-WEEKENDS = ['Friday', 'Saturday']  # list of weekends
+WEEKDAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday']  # list of weekdays
+WEEKENDS = ['Thursday', 'Friday', 'Saturday']  # list of weekends
 NUM_DAYS_YEAR = 365  # number of days in a year
 
 # determine if scheduling for the current month or for the next month
