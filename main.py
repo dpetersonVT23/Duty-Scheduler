@@ -279,7 +279,7 @@ def schedule_current_day(SM_DETAILS, DAY_NUM, weekday):
                         break
             if len(candidates_selected) != CURRENT_DAY_STAFF_NUM:
                 for index in range(1, len(candidate_selection)):
-                    if candidates[candidate_selection[index]] not in candidates_selected and len(candidates_selected) != WEEKEND_STAFF_NUM:
+                    if candidates[candidate_selection[index]] not in candidates_selected and len(candidates_selected) != CURRENT_DAY_STAFF_NUM:
                         candidates_selected.append(candidates[candidate_selection[index]])
                         break
 
