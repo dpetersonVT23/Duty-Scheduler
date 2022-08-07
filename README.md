@@ -51,7 +51,7 @@ Please ensure the options for selecting when an individual is busy is formatted 
 
 You will be able to export data from the Google form responses to be used as the Availability Excel file for the program. This is what the output file might look like, however, there are some things you want to make sure of before inputting it to the program.
 
-![](images/excel_1.png)
+![](images/excel_availability.png)
 
 1) Ensure the column header for the Names is "First Name"
 2) Ensure the column header for the days the individual is not available is "Days"
@@ -63,7 +63,7 @@ Save the Availability Excel file here. Now it is time to set up the History Exce
 
 ENSURE THE NAMES FROM THE AVAILABILITY EXCEL FILE MATCH THE NAMES FROM THE HISTORY EXCEL FILE!!!
 
-![](images/excel_2.png)
+![](images/excel_history.png)
 
 ## Running the Program
 Now to run the program! Open the command prompt and run the command "cd Duty-Scheduler", then run the command "python main.py", fill in the prompts in the terminal accordingly, and your Calendar will pop-up and automatically be saved to the Schedule folder for you to access and share with your staff! In addition, your History Excel file will be updated with a running sum of worked weekdays/weekends automatically and will use these values to appropiately assign a balanced duty schedule over the course of the semester/year.
